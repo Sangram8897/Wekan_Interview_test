@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import Input from "../../components/input";
 import Button from "../../components/button";
 import { formReducer } from "../../components/formReducer";
+import { Colors } from "../../style/colors";
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
 const LoginScreen = ({ navigation }) => {
@@ -62,6 +63,7 @@ const LoginScreen = ({ navigation }) => {
 
               <Input
                 id='username'
+                label={'Email'}
                 keyboardType={'default'}
                 initialValue={formState.inputValues.username}
                 initialValid={formState.inputValidities.username}
@@ -77,6 +79,7 @@ const LoginScreen = ({ navigation }) => {
 
               <Input
                 id='password'
+                label={'Password'}
                 keyboardType={'default'}
                 initialValue={formState.inputValues.password}
                 initialValid={formState.inputValidities.password}
@@ -90,7 +93,8 @@ const LoginScreen = ({ navigation }) => {
 
             <Button
               disabled={!formState.inputValues.username || !formState.inputValues.password}
-              backgroundColor="#7DE24E"
+              backgroundColor={Colors.ACCENTS_UNION_BLUE}
+              textColor={Colors.WHITE}
               label="LOGIN"
               onPress={handleSubmitPress}
             />

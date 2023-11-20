@@ -14,7 +14,7 @@ const RestoInfo = ({ route, navigation, }: any) => {
   const deleteTask = async (id: String) => {
     await dispatch(deleteTaskRequest(id))
     dispatch(taskListRequest())
-
+    navigation.goBack()
   }
 
   return (

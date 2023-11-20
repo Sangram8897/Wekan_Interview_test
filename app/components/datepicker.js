@@ -1,43 +1,48 @@
 
 import React, { useState } from 'react';
-import { View, Button, Text, StyleSheet } from 'react-native';
+import { View, Button, Text, StyleSheet,Platform } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import moment from 'moment';
+import { Colors } from '../style/colors';
 
-const DatePickerComp = ({ date = '', placeholder = "", setDate = () => { } }) => {
+const DatePickerComp = ({ label = '', date = '', placeholder = "", setDate = () => { } }) => {
     const [open, setOpen] = useState(false)
-    console.log('date',date);
-//return <></>
+    console.log('date', date);
+    //return <></>
     return (
         <View style={styles.inputContainer}>
-            {/* <Button title="Open" onPress={() => setOpen(true)} /> */}
-            <DatePicker
-                modal
-                mode={'date'}
-                open={open}
-                date={date ? date : new Date()}
-                onConfirm={(date) => {
-                    setOpen(false)
-                    setDate(date)
-                }}
-                onCancel={() => {
-                    setOpen(false)
-                }}
-            />
-            {date ? <Text style={{
-                fontFamily: 'Montserrat-SemiBold',
-                fontSize: 14,
-                color: 'black',
-                marginRight: 10,
+            {label && <Text style={[styles.fieldLabelText]}>{label}</Text>}
+            <View style={styles.datepicker}>
 
-            }}>{moment(date).format('DD-MMM-YYYY')}</Text> :
-                <Text style={styles.placeholderText}>{placeholder}</Text>
-            }
-            <Fontisto
-                onPress={() => setOpen(true)}
-                name={'date'} size={20} color={'gray'} />
+                <DatePicker
+                    modal
+                    mode={'date'}
+                    open={open}
+                    date={date ? date : new Date()}
+                    onConfirm={(date) => {
+                        setOpen(false)
+                        setDate(date)
+                    }}
+                    onCancel={() => {
+                        setOpen(false)
+                    }}
+                />
+                {date ? <Text style={{
+                    fontFamily: 'Montserrat-SemiBold',
+                    fontSize: 14,
+                    color: 'black',
+                    marginRight: 10,
+
+                }}>{moment(date).format('DD-MMM-YYYY')}</Text> :
+                    <Text style={styles.placeholderText}>{placeholder}</Text>
+                }
+                <Fontisto
+                    onPress={() => setOpen(true)}
+                    name={'date'} size={20} color={'gray'} />
+            </View>
         </View>
+
     )
 };
 
@@ -49,19 +54,40 @@ const styles = StyleSheet.create({
         fontFamily: 'Montserrat-SemiBold',
         color: 'gray'
     },
-    inputContainer: {
+    datepicker: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        marginVertical: 8,
+        marginVertical: 4,
         paddingHorizontal: 10,
         minHeight: Platform.OS == 'ios' ? 55 : 50,
-        borderWidth: 0.5,
-        width: '90%',
+        width: '100%',
         alignSelf: 'center',
         backgroundColor: '#FFF',
         borderColor: '#777777',
         borderRadius: 5,
-        // padding: Platform.OS == 'ios' ? 14 : 12,
+        ...Platform.select({
+            ios: {
+                shadowColor: '#CCC',
+                shadowOffset: { width: 2, height: 2 },
+                shadowOpacity: 0.8,
+                shadowRadius: 4,
+            },
+            android: {
+                elevation: 5,
+            },
+        }),
+    },
+    inputContainer: {
+        width: '90%',
+        marginTop: 10,
+        alignSelf: 'center',
+    },
+    fieldLabelText: {
+        marginLeft: 4,
+        marginBottom: 4,
+        fontSize: Platform.OS == 'ios' ? 14 : 12,
+        color: Colors.ACCENTS_UNION_BLUE,
+        fontFamily: 'Montserrat-SemiBold'
     },
 })

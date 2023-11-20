@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Platform, StyleSheet, Text, View } from 'react-native';
 import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from 'react-native-vector-icons/AntDesign';
+import { Colors } from '../style/colors';
 
-const DropdownComp= ({ placeholder, data, value, setDropdownValue=()=>{}}: any) => {
+const DropdownComp= ({label, placeholder, data, value, setDropdownValue=()=>{}}: any) => {
   const [isFocus, setIsFocus] = useState(false);
 
   return (
-      <Dropdown
+    <View style={styles.inputContainer}>
+         {label && <Text style={[styles.fieldLabelText]}>{label}</Text>}
+   <Dropdown
         style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
         selectedTextStyle={styles.selectedTextStyle}
-       
         data={data}
         maxHeight={300}
         minHeight={100}
@@ -26,23 +27,45 @@ const DropdownComp= ({ placeholder, data, value, setDropdownValue=()=>{}}: any) 
           setIsFocus(false);
         }}
       />
- 
+    </View> 
   );
 };
 
 export default DropdownComp
 
 const styles = StyleSheet.create({
+    fieldLabelText: {
+        marginLeft: 4,
+        marginBottom: 4,
+        fontSize: Platform.OS == 'ios' ? 14 : 12,
+        color: Colors.ACCENTS_UNION_BLUE,
+        fontFamily: 'Montserrat-SemiBold'
+    },
+    inputContainer: {
+        width: '90%',
+        marginTop: 10,
+        alignSelf: 'center',
+    },
   dropdown: {
     height: Platform.OS == 'ios' ? 55 : 50,
-    width:'92%',
+    width:'100%',
     alignSelf:'center',
     marginVertical:4,
     borderColor: 'gray',
     backgroundColor: 'white',
-    borderWidth: 0.5,
     borderRadius: 8,
     paddingHorizontal: 8,
+    ...Platform.select({
+        ios: {
+            shadowColor: '#CCC',
+            shadowOffset: { width: 2, height: 2 },
+            shadowOpacity: 0.8,
+            shadowRadius: 4,
+        },
+        android: {
+            elevation:5,
+        },
+    }),
   },
   label: {
     position: 'absolute',

@@ -3,6 +3,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
+import { Colors } from "../style/colors";
 
 export default function Button({
   onPress = () => { },
@@ -29,7 +30,7 @@ export default function Button({
         borderWidth: borderWidth,
         borderColor: borderColor,
         overflow: 'hidden',
-        backgroundColor: disabled ? 'gray' : backgroundColor,
+        backgroundColor: disabled ? Colors.GRAY_G2 : backgroundColor,
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,

@@ -91,23 +91,38 @@ const styles = StyleSheet.create({
     textInput: {
         // textAlignVertical: 'top',
         fontFamily: 'Montserrat-SemiBold',
-        padding: 12,
+        paddingHorizontal: 10,
         fontSize: 14,
         width: '100%',
         justifyContent: 'center',
+        // alignItems: 'center',
         borderRadius: 6,
         backgroundColor: '#FFF',
         marginVertical: 4,
+        borderWidth: 0.5,
+        borderColor: Colors.GRAY_G1,
+        elevation: 5,
         minHeight: Platform.OS == 'ios' ? 55 : 50,
+        ...Platform.select({
+            ios: {
+                shadowColor: '#CCC',
+                shadowOffset: { width: 2, height: 2 },
+                shadowOpacity: 0.8,
+                shadowRadius: 4,
+            },
+            android: {
+
+            },
+        }),
     },
     inputContainer: {
         width: '90%',
-        marginTop: Platform.OS == 'ios' ? 16 : 8,
+        marginTop: 10,
         alignSelf: 'center',
-        justifyContent: 'center',
-        minHeight: Platform.OS == 'ios' ? 55 : 50,
     },
     fieldLabelText: {
+        marginLeft: 4,
+        marginBottom: 4,
         fontSize: Platform.OS == 'ios' ? 14 : 12,
         color: Colors.ACCENTS_UNION_BLUE,
         fontFamily: 'Montserrat-SemiBold'

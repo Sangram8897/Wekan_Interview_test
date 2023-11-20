@@ -3,6 +3,7 @@ import {
     SafeAreaView,
     StyleSheet,
     Keyboard,
+    Platform,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { addTaskRequest, editTaskRequest, taskListRequest, tasksListSuccess } from "../../../store/sagas/tasksActions";
@@ -70,9 +71,10 @@ const AddTask = ({ route, navigation, }) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}>
             <Input
                 id='title'
+                autoFocus={true}
                 label={'Task Title'}
                 keyboardType={'default'}
                 initialValue={formState.inputValues.title}
@@ -88,18 +90,21 @@ const AddTask = ({ route, navigation, }) => {
                 label={'Task Description'}
                 textAlignVertical="top"
                 numberOfLines={6}
+                minHeight={140}
+                height={Platform.OS=='ios'&&150}
                 multiline={true}
                 keyboardType={'default'}
                 initialValue={formState.inputValues.description}
                 initialValid={formState.inputValidities.description}
                 required={true}
                 onInputChange={inputChangeHandler}
-                placeholder={'description'}
+                placeholder={'Enter task Description'}
                 onSubmitEditing={Keyboard.dismiss}
             // inputAccessoryViewID={inputAccessoryViewID}
             />
 
             <DatePickerComp
+                label={'Select Task Due Date'}
                 placeholder={'Select Due Date'}
                 date={formState.inputValues.due_date}
                 setDate={(date) => {
@@ -109,6 +114,7 @@ const AddTask = ({ route, navigation, }) => {
             />
 
             <DropdownComp
+                label={'Select Task Status'}
                 placeholder={'Select Status'}
                 value={formState.inputValues.status}
                 data={task_status}
@@ -118,7 +124,7 @@ const AddTask = ({ route, navigation, }) => {
             <Button
                 disabled={!formState.inputValues.title && !formState.inputValues.due_date}
                 backgroundColor={Colors.ACCENTS_UNION_BLUE}
-                textColor="white"
+                textColor={Colors.WHITE}
                 label={item ? 'UPDATE' : "ADD"}
                 onPress={handleSubmitPress}
             />
