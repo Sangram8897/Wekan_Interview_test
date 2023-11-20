@@ -1,12 +1,12 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import useTheme from '../../../styles/hooks/useTheme'
+import useTheme from 'styles/hooks/useTheme'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import { task_status_colors, task_status_obj } from '../../../config/variables';
-import { deleteTaskRequest, taskListRequest } from '../../../store/constants/tasksActions';
+import { task_status_colors, task_status_obj } from 'config/variables';
+import { deleteTaskRequest, taskListRequest } from 'store/constants/tasksActions';
 import { useDispatch } from 'react-redux';
 
-const RestoInfo = ({ route, navigation, }: any) => {
+const TaskInfo = ({ route, navigation, }: any) => {
   const { item } = route?.params;
   const dispatch = useDispatch()
   const { Layout, Fonts } = useTheme()
@@ -20,11 +20,11 @@ const RestoInfo = ({ route, navigation, }: any) => {
   return (
     <View style={[Layout.fill, { margin: 12, padding: 12, backgroundColor: '#FFF' }]}>
       <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-        
-      <Text style={[styles.taskStatusText, {
-        color: task_status_colors[item?.status]
-      }]}>{item?.status ? task_status_obj[item?.status] : 'DRAFT'}</Text>
-        
+
+        <Text style={[styles.taskStatusText, {
+          color: task_status_colors[item?.status]
+        }]}>{item?.status ? task_status_obj[item?.status] : 'DRAFT'}</Text>
+
         <View style={{ flexDirection: 'row' }}>
           <TouchableOpacity
             onPress={() => { navigation.navigate('AddTask', item) }}
@@ -42,7 +42,7 @@ const RestoInfo = ({ route, navigation, }: any) => {
 
 
       <Text style={[styles.title]}>{item.title}</Text>
-   
+
 
       <Text style={[styles.descTitleText]}>{'Description : '}</Text>
       <Text style={[Fonts.textSmall, styles.desc]}>{item?.description}</Text>
@@ -50,7 +50,7 @@ const RestoInfo = ({ route, navigation, }: any) => {
   )
 }
 
-export default RestoInfo
+export default TaskInfo
 
 const styles = StyleSheet.create({
   title: {

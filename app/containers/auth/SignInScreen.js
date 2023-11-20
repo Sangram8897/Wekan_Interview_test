@@ -2,18 +2,7 @@
 
 // Import React and Component
 import React, { useState, createRef } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  TextInput,
-  View,
-  Text,
-  ScrollView,
-  Image,
-  Keyboard,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from "react-native";
+import { SafeAreaView, StyleSheet, TextInput, View, Text, ScrollView, Keyboard, TouchableOpacity, KeyboardAvoidingView, } from "react-native";
 
 import auth from "@react-native-firebase/auth";
 
@@ -25,7 +14,7 @@ const SignInScreen = ({ navigation }) => {
   const passwordInputRef = createRef();
 
   const handleSubmitPress = () => {
-     setErrortext("");
+    setErrortext("");
     // if (!userEmail) {
     //   alert("Please fill Email");
     //   return;
@@ -37,10 +26,10 @@ const SignInScreen = ({ navigation }) => {
     auth()
       .createUserWithEmailAndPassword(userEmail, userPassword)
       .then((user) => {
-        console.log('user',user);
+        console.log('user', user);
         navigation.navigate('LoginScreen')
         // If server response message same as Data Matched
-       // if (user) navigation.replace("HomeScreen");
+        // if (user) navigation.replace("HomeScreen");
       })
       .catch((error) => {
         console.log(error);
@@ -189,7 +178,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    height:50,
+    height: 50,
     color: "white",
     padding: 15,
     color: 'red',

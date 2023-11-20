@@ -1,20 +1,11 @@
-import React, { useState, createRef, useEffect, useReducer, useCallback } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Keyboard,
-  KeyboardAvoidingView,
-} from "react-native";
-
-import { loginRequest } from "store/constants/authActions";
-import { useDispatch } from "react-redux";
-
+import React, { createRef, useReducer, useCallback } from "react";
+import { SafeAreaView, StyleSheet, View, Text, ScrollView, Keyboard, KeyboardAvoidingView } from "react-native";
 import { Button, Input } from "components";
 import { Colors } from "styles/colors";
 import { formReducer } from "store/reducer/formReducer";
+
+import { loginRequest } from "store/constants/authActions";
+import { useDispatch } from "react-redux";
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 

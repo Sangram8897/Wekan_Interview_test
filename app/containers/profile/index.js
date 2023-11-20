@@ -1,27 +1,22 @@
 import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import { Props } from '../../root/navigation'
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutRequest } from '../../store/constants/authActions';
+import { logoutRequest } from 'store/constants/authActions';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import DropdownComponent from '../../components/dropdown';
 
 const { width, height } = Dimensions.get('window')
 
 const Profile = ({ navigation }) => {
+  
   const dispatch = useDispatch()
   const profile_data = useSelector(state => state.profile.profile);
-  const user_data = useSelector(state => state.auth.user);
-  console.log('profile_data', profile_data, user_data);
 
   const logout = () => {
     dispatch(logoutRequest())
-    //navigation.replace('LoginScreen')
-
   }
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -60,7 +55,7 @@ const Profile = ({ navigation }) => {
           disabled={true}
           style={styles.box}
         >
-          <MaterialCommunityIcons name={'email-outline'} size={24} color={'gray'} />
+          <MaterialCommunityIcons name={'email-outline'} size={22} color={'gray'} />
           <Text style={styles.boxText} numberOfLines={1}>{profile_data?.email}</Text>
         </TouchableOpacity>
 
@@ -76,7 +71,7 @@ const Profile = ({ navigation }) => {
           onPress={logout}
           style={styles.box}
         >
-          <AntDesign name={'logout'} size={20} color={'red'} />
+          <AntDesign name={'logout'} size={22} color={'red'} />
           <Text style={[styles.boxText, { color: 'red' }]}>Logout</Text>
         </TouchableOpacity>
 
@@ -102,39 +97,3 @@ const styles = StyleSheet.create({
     marginLeft: 16
   }
 })
-
-
-// import { StyleSheet, Text, View } from 'react-native'
-// import React from 'react'
-// import { Props } from '../../root/navigation'
-// import { useDispatch, useSelector } from 'react-redux';
-// import { logoutRequest } from '../../store/sagas/authActions';
-
-// const Profile = ({ navigation }) => {
-//   const dispatch = useDispatch()
-//   const profile_data = useSelector(state => state.profile.profile);
-//   console.log('profile_data', profile_data);
-//   return (
-//     <View>
-//       <Text style={{ color: 'blue' }}
-//         onPress={() => navigation.navigate('CreateProfile')}
-//       >Edit profile</Text>
-
-//       <Text onPress={() => navigation.goBack()}>{profile_data?.name}</Text>
-//       <Text onPress={() => navigation.goBack()}>{profile_data?.mobile_number}</Text>
-//       <Text onPress={() => navigation.goBack()}>{profile_data?.address}</Text>
-//       <Text onPress={() => navigation.goBack()}>{profile_data?.age}</Text>
-
-//       <Text style={{ color: 'blue' }}
-//         onPress={() => {
-//           dispatch(logoutRequest())
-//           navigation.replace('LoginScreen')
-//         }}
-//       >logout</Text>
-//     </View>
-//   )
-// }
-
-// export default Profile
-
-// const styles = StyleSheet.create({})

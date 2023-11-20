@@ -1,10 +1,9 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Profile from '../../containers/profile';
-import Home from '../../containers/home';
+import Profile from 'containers/profile';
+import Home from 'containers/home';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import AntDesign from 'react-native-vector-icons/AntDesign';
-import { View, Text, TouchableOpacity, Button, Alert } from 'react-native';
+
 
 const Tab = createBottomTabNavigator();
 

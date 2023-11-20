@@ -1,5 +1,5 @@
 
-import { put, call, all, takeLatest } from 'redux-saga/effects';
+import { put, call, takeLatest } from 'redux-saga/effects';
 import firestore from '@react-native-firebase/firestore';
 import { profileSuccess } from '../constants/profileActions';
 

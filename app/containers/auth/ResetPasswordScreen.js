@@ -1,8 +1,9 @@
 import React, { useState, useReducer, useCallback } from 'react';
 import { View, SafeAreaView, Alert } from 'react-native';
-import auth from "@react-native-firebase/auth";
 import {Button,Input} from 'components';
 import { Colors } from 'styles/colors';
+
+import auth from "@react-native-firebase/auth";
 import { formReducer } from 'store/reducer/formReducer';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'

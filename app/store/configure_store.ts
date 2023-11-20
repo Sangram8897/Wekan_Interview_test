@@ -1,6 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit'
-import counterReducer from './reducer/counter'
-import { pokemonApi } from '../services/pokemon'
 import createSagaMiddleware from 'redux-saga'
 import { watcherSaga } from './sagas/root_saga'
 import authReducer from './reducer/authReducer'
@@ -11,11 +9,9 @@ const sagaMiddleware = createSagaMiddleware()
 
 export const store = configureStore({
   reducer: {
-   // counter: counterReducer,
     auth: authReducer,
     profile: profileReducer,
     tasksReducer: tasksReducer,
-    //[pokemonApi.reducerPath]: pokemonApi.reducer,
   },
   middleware: (getDefaultMiddleware) =>
   getDefaultMiddleware().concat(sagaMiddleware),

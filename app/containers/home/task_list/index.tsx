@@ -1,17 +1,11 @@
 import React from 'react';
-import {
-  View,
-  FlatList,
-  StyleSheet,
-  Text,
-  Image,
-  TouchableOpacity
-} from 'react-native';
+import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { NavigationProp } from "@react-navigation/native";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import { useAppDispatch } from '../../../store/hooks';
-import { deleteTaskRequest, taskListRequest } from '../../../store/constants/tasksActions';
-import { task_status_colors, task_status_obj } from '../../../config/variables';
+
+import { deleteTaskRequest, taskListRequest } from 'store/constants/tasksActions';
+import { task_status_colors, task_status_obj } from 'config/variables';
+import { useDispatch } from 'react-redux';
 
 interface RouterProps {
   navigation: NavigationProp<any, any>;
@@ -21,7 +15,7 @@ interface RouterProps {
 type ItemProps = { title: string };
 
 const TaskList = ({ navigation, resto_list }: RouterProps) => {
-  const dispatch = useAppDispatch()
+  const dispatch = useDispatch()
 
   const deleteTask = async (id: String) => {
     await dispatch(deleteTaskRequest(id))

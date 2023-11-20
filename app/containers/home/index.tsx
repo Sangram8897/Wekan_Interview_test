@@ -1,16 +1,12 @@
 import { StyleSheet, SafeAreaView, TouchableOpacity, Text, View, Button, ScrollView } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from '../../store/reducer/counter'
-import { useAppSelector, useAppDispatch } from '../../store/hooks'
-import firestore from '@react-native-firebase/firestore';
+
+import { taskListRequest } from 'store/constants/tasksActions'
+import NotFound from 'components/notfound'
+import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Props } from '../../root/navigation'
 import TaskList from './task_list'
-import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { taskListRequest } from '../../store/constants/tasksActions'
-import NotFound from '../../components/notfound'
-import AntDesign from 'react-native-vector-icons/AntDesign';
-
 /**
  * 
  * @param param0 
@@ -29,8 +25,8 @@ interface MyObject {
 }
 
 const Home = ({ navigation }: Props) => {
-  const dispatch = useAppDispatch()
-  const [resto_list, set_resto_list] = useState<MyObject[]>([])
+  const dispatch = useDispatch()
+  //const [resto_list, set_resto_list] = useState<MyObject[]>([])
   const user_data = useSelector(state => state.auth.user);
   const task_list = useSelector(state => state.tasksReducer.tasks);
   const profile_data = useSelector(state => state.profile.profile);
@@ -75,13 +71,3 @@ const Home = ({ navigation }: Props) => {
 }
 
 export default Home
-/**
- *  <ScrollView>
-          {/* <GestureHandlerRootView>
-          <SectionI />
-        </GestureHandlerRootView>
-        <SectionII /> //
-        <TaskList navigation={navigation} resto_list={task_list} />
-
-        </ScrollView>
- */

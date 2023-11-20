@@ -1,21 +1,13 @@
 
 
-import React, { useState, useRef, useEffect, createRef, useCallback, useReducer } from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
-  View,
-  Text,
-  ScrollView,
-  Keyboard,
-  KeyboardAvoidingView,
-} from "react-native";
+import React, { useRef, useEffect, useCallback, useReducer } from "react";
+import { SafeAreaView, StyleSheet, View, ScrollView, Keyboard, KeyboardAvoidingView } from "react-native";
+import { Button, Input } from "components";
 
 import { useDispatch, useSelector } from "react-redux";
-import { profileRequest } from "../../store/constants/profileActions";
-import { formReducer } from "../../store/reducer/formReducer";
-import Input from "../../components/input";
-import Button from "../../components/button";
+import { profileRequest } from "store/constants/profileActions";
+import { formReducer } from "store/reducer/formReducer";
+
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -112,10 +104,10 @@ const CreateProfile = ({ navigation, route }) => {
               initialValue={formState.inputValues.address}
               initialValid={formState.inputValidities.address}
               textAlignVertical="top"
-                numberOfLines={3}
-                minHeight={100}
-                height={Platform.OS=='ios'&&100}
-              
+              numberOfLines={3}
+              minHeight={100}
+              height={Platform.OS == 'ios' && 100}
+
               multiline={true}
               required={true}
               onInputChange={inputChangeHandler}
