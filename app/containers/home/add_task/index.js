@@ -1,4 +1,4 @@
-import React, { useCallback, useReducer } from "react";
+import React, { useCallback, useReducer, useEffect } from "react";
 import {
     SafeAreaView,
     StyleSheet,
@@ -13,6 +13,7 @@ import DropdownComp from "../../../components/dropdown";
 import DatePickerComp from "../../../components/datepicker";
 import moment from "moment";
 import { task_status } from "../../../config/variables";
+import { Colors } from "../../../style/colors";
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -20,6 +21,12 @@ const AddTask = ({ route, navigation, }) => {
     const dispatch = useDispatch()
     const item = route?.params;
     const user_data = useSelector(state => state.auth.user);
+    console.log('item', item);
+    useEffect(() => {
+        navigation.setOptions({
+            title: item ? 'Update Task' : 'Create Task',
+        });
+    }, []);
 
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
@@ -49,7 +56,7 @@ const AddTask = ({ route, navigation, }) => {
         let data = {
             title: formState.inputValues.title,
             description: formState.inputValues.description,
-            due_date:formState.inputValues.due_date? moment(formState.inputValues.due_date).format('DD-MMM-YYYY'):"",
+            due_date: formState.inputValues.due_date ? moment(formState.inputValues.due_date).format('DD-MMM-YYYY') : "",
             status: formState.inputValues.status,
             uid: user_data?.uid
         }
@@ -66,17 +73,20 @@ const AddTask = ({ route, navigation, }) => {
         <SafeAreaView style={{ flex: 1 }}>
             <Input
                 id='title'
+                label={'Task Title'}
                 keyboardType={'default'}
                 initialValue={formState.inputValues.title}
                 initialValid={formState.inputValidities.title}
                 required={true}
                 onInputChange={inputChangeHandler}
-                placeholder={'title'}
+                placeholder={'Enter task title'}
                 onSubmitEditing={Keyboard.dismiss}
             // inputAccessoryViewID={inputAccessoryViewID}
             />
             <Input
                 id='description'
+                label={'Task Description'}
+                textAlignVertical="top"
                 numberOfLines={6}
                 multiline={true}
                 keyboardType={'default'}
@@ -92,9 +102,10 @@ const AddTask = ({ route, navigation, }) => {
             <DatePickerComp
                 placeholder={'Select Due Date'}
                 date={formState.inputValues.due_date}
-                setDate={(date) =>{
-                    console.log('date',date);
-                    inputChangeHandler('due_date', date, true)}}
+                setDate={(date) => {
+                    console.log('date', date);
+                    inputChangeHandler('due_date', date, true)
+                }}
             />
 
             <DropdownComp
@@ -106,9 +117,9 @@ const AddTask = ({ route, navigation, }) => {
 
             <Button
                 disabled={!formState.inputValues.title && !formState.inputValues.due_date}
-                backgroundColor="blue"
+                backgroundColor={Colors.ACCENTS_UNION_BLUE}
                 textColor="white"
-                label="ADD TASK"
+                label={item ? 'UPDATE' : "ADD"}
                 onPress={handleSubmitPress}
             />
         </SafeAreaView>

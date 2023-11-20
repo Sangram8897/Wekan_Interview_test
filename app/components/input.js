@@ -1,5 +1,6 @@
 import React, { useReducer, useEffect, useContext } from 'react'
 import { StyleSheet, TextInput, Text, View, Platform } from 'react-native'
+import { Colors } from '../style/colors';
 const INPUT_BLUR = 'INPUT_BLUR';
 const INPUT_CHANGE = 'INPUT_CHANGE';
 
@@ -60,21 +61,22 @@ const Input = (props) => {
         dispatch({ type: INPUT_BLUR })
     }
     return (
-        <View style={{ width:'100%' }}>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    {...props}
-                    style={[styles.textInput, { color: 'black' }]}
-                    value={inputState.value}
-                    onChangeText={(text) => textChangeHandler(text)}
-                    onBlur={lostFocusHandler}
-                    onSubmitEditing={props.onSubmitEditing}
-                    inputAccessoryViewID={'uniqueID'}
-                    textAlignVertical="top"
-                    placeholder={props.placeholder}
+        <View style={styles.inputContainer}>
+            {props.label && <Text style={[styles.fieldLabelText]}>{props.label}</Text>}
+            {/* <View style={styles.inputContainer}> */}
+            <TextInput
+                {...props}
+                style={[styles.textInput, { color: 'black' }]}
+                value={inputState.value}
+                onChangeText={(text) => textChangeHandler(text)}
+                onBlur={lostFocusHandler}
+                onSubmitEditing={props.onSubmitEditing}
+                inputAccessoryViewID={'uniqueID'}
+                // textAlignVertical="top"
+                placeholder={props.placeholder}
 
-                />
-            </View>
+            />
+            {/* </View> */}
             {
                 !inputState.isValid && inputState.touched &&
                 <Text style={{ fontSize: 10, color: 'red' }}>{props.errorText}</Text>
@@ -89,23 +91,25 @@ const styles = StyleSheet.create({
     textInput: {
         // textAlignVertical: 'top',
         fontFamily: 'Montserrat-SemiBold',
-        paddingHorizontal: 10,
+        padding: 12,
         fontSize: 14,
         width: '100%',
         justifyContent: 'center',
-        // alignItems: 'center',
         borderRadius: 6,
         backgroundColor: '#FFF',
+        marginVertical: 4,
+        minHeight: Platform.OS == 'ios' ? 55 : 50,
     },
     inputContainer: {
-        marginVertical: 8,
-        minHeight: Platform.OS == 'ios' ? 55 : 50,
-        borderWidth: 0.5,
         width: '90%',
+        marginTop: Platform.OS == 'ios' ? 16 : 8,
         alignSelf: 'center',
         justifyContent: 'center',
-        borderColor: '#777777',
-        borderRadius: 5,
-        // padding: Platform.OS == 'ios' ? 14 : 12,
+        minHeight: Platform.OS == 'ios' ? 55 : 50,
+    },
+    fieldLabelText: {
+        fontSize: Platform.OS == 'ios' ? 14 : 12,
+        color: Colors.ACCENTS_UNION_BLUE,
+        fontFamily: 'Montserrat-SemiBold'
     },
 })

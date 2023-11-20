@@ -23,8 +23,8 @@ const LoginScreen = ({ navigation }) => {
   const passwordInputRef = createRef();
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      username: "",
-      password: ""
+      username: "sangrampaste8897@gmail.com",
+      password: "12345678"
     },
     inputValidities: {
       username: true,
@@ -81,7 +81,7 @@ const LoginScreen = ({ navigation }) => {
                 initialValue={formState.inputValues.password}
                 initialValid={formState.inputValidities.password}
                 required={true}
-                secureTextEntry={true}
+                //secureTextEntry={true}
                 onInputChange={inputChangeHandler}
                 placeholder={'Password'}
                 onSubmitEditing={Keyboard.dismiss}
