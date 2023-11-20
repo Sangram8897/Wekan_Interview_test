@@ -9,13 +9,13 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 
-import { loginRequest } from "../../store/sagas/authActions";
+import { loginRequest } from "store/constants/authActions";
 import { useDispatch } from "react-redux";
 
-import Input from "../../components/input";
-import Button from "../../components/button";
-import { formReducer } from "../../components/formReducer";
-import { Colors } from "../../style/colors";
+import { Button, Input } from "components";
+import { Colors } from "styles/colors";
+import { formReducer } from "store/reducer/formReducer";
+
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
 const LoginScreen = ({ navigation }) => {
@@ -25,7 +25,7 @@ const LoginScreen = ({ navigation }) => {
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
       username: "sangrampaste8897@gmail.com",
-      password: "12345678"
+      password: "123456"
     },
     inputValidities: {
       username: true,
@@ -61,35 +61,36 @@ const LoginScreen = ({ navigation }) => {
         <View>
           <KeyboardAvoidingView enabled>
 
-              <Input
-                id='username'
-                label={'Email'}
-                keyboardType={'default'}
-                initialValue={formState.inputValues.username}
-                initialValid={formState.inputValidities.username}
-                required={true}
-                onInputChange={inputChangeHandler}
-                onSubmitEditing={() =>
-                  passwordInputRef.current &&
-                  passwordInputRef.current.focus()
-                }
-                placeholder={'User name'}
-              //   inputAccessoryViewID={inputAccessoryViewID}
-              />
+            <Input
+              id='username'
+              label={'Email'}
+              keyboardType={'default'}
+              autoFocus={true}
+              initialValue={formState.inputValues.username}
+              initialValid={formState.inputValidities.username}
+              required={true}
+              onInputChange={inputChangeHandler}
+              onSubmitEditing={() =>
+                passwordInputRef.current &&
+                passwordInputRef.current.focus()
+              }
+              placeholder={'User name'}
+            //   inputAccessoryViewID={inputAccessoryViewID}
+            />
 
-              <Input
-                id='password'
-                label={'Password'}
-                keyboardType={'default'}
-                initialValue={formState.inputValues.password}
-                initialValid={formState.inputValidities.password}
-                required={true}
-                //secureTextEntry={true}
-                onInputChange={inputChangeHandler}
-                placeholder={'Password'}
-                onSubmitEditing={Keyboard.dismiss}
-              // inputAccessoryViewID={inputAccessoryViewID}
-              />
+            <Input
+              id='password'
+              label={'Password'}
+              keyboardType={'default'}
+              initialValue={formState.inputValues.password}
+              initialValid={formState.inputValidities.password}
+              required={true}
+              secureTextEntry={true}
+              onInputChange={inputChangeHandler}
+              placeholder={'Password'}
+              onSubmitEditing={Keyboard.dismiss}
+            // inputAccessoryViewID={inputAccessoryViewID}
+            />
 
             <Button
               disabled={!formState.inputValues.username || !formState.inputValues.password}
@@ -99,6 +100,14 @@ const LoginScreen = ({ navigation }) => {
               onPress={handleSubmitPress}
             />
 
+            <Text
+              style={styles.registerTextStyle}
+              onPress={() =>
+                navigation.navigate("ResetPasswordScreen")
+              }
+            >
+              Forgot Password
+            </Text>
             <Text
               style={styles.registerTextStyle}
               onPress={() =>

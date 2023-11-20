@@ -4,7 +4,7 @@ import { View, Button, Text, StyleSheet,Platform } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import moment from 'moment';
-import { Colors } from '../style/colors';
+import { Colors } from '../styles/colors';
 
 const DatePickerComp = ({ label = '', date = '', placeholder = "", setDate = () => { } }) => {
     const [open, setOpen] = useState(false)

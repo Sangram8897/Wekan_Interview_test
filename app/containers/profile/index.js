@@ -2,7 +2,7 @@ import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } fr
 import React from 'react'
 import { Props } from '../../root/navigation'
 import { useDispatch, useSelector } from 'react-redux';
-import { logoutRequest } from '../../store/sagas/authActions';
+import { logoutRequest } from '../../store/constants/authActions';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';

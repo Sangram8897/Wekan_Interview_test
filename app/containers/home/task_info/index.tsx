@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
-import useTheme from '../../../style/hooks/useTheme'
+import useTheme from '../../../styles/hooks/useTheme'
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { task_status_colors, task_status_obj } from '../../../config/variables';
-import { deleteTaskRequest, taskListRequest } from '../../../store/sagas/tasksActions';
+import { deleteTaskRequest, taskListRequest } from '../../../store/constants/tasksActions';
 import { useDispatch } from 'react-redux';
 
 const RestoInfo = ({ route, navigation, }: any) => {

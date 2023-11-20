@@ -12,8 +12,8 @@ import {
 } from "react-native";
 
 import { useDispatch, useSelector } from "react-redux";
-import { profileRequest } from "../../store/sagas/profileActions";
-import { formReducer } from "../../components/formReducer";
+import { profileRequest } from "../../store/constants/profileActions";
+import { formReducer } from "../../store/reducer/formReducer";
 import Input from "../../components/input";
 import Button from "../../components/button";
 
@@ -82,6 +82,7 @@ const CreateProfile = ({ navigation, route }) => {
           <KeyboardAvoidingView enabled>
             <Input
               id='name'
+              label={'User name'}
               ref={input1Ref}
               keyboardType={'default'}
               initialValue={formState.inputValues.name}
@@ -94,6 +95,7 @@ const CreateProfile = ({ navigation, route }) => {
 
             <Input
               id='mobile_number'
+              label={'Mobile Number'}
               keyboardType={'default'}
               initialValue={formState.inputValues.mobile_number}
               initialValid={formState.inputValidities.mobile_number}
@@ -105,10 +107,15 @@ const CreateProfile = ({ navigation, route }) => {
 
             <Input
               id='address'
+              label={'Address'}
               keyboardType={'default'}
               initialValue={formState.inputValues.address}
               initialValid={formState.inputValidities.address}
-              numberOfLines={3}
+              textAlignVertical="top"
+                numberOfLines={3}
+                minHeight={100}
+                height={Platform.OS=='ios'&&100}
+              
               multiline={true}
               required={true}
               onInputChange={inputChangeHandler}

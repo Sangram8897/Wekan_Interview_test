@@ -3,7 +3,7 @@ import {
   Text,
   TouchableOpacity,
 } from "react-native";
-import { Colors } from "../style/colors";
+import { Colors } from "../styles/colors";
 
 export default function Button({
   onPress = () => { },

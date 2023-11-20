@@ -10,7 +10,7 @@ import {
 import { NavigationProp } from "@react-navigation/native";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { useAppDispatch } from '../../../store/hooks';
-import { deleteTaskRequest, taskListRequest } from '../../../store/sagas/tasksActions';
+import { deleteTaskRequest, taskListRequest } from '../../../store/constants/tasksActions';
 import { task_status_colors, task_status_obj } from '../../../config/variables';
 
 interface RouterProps {
@@ -51,16 +51,10 @@ const TaskList = ({ navigation, resto_list }: RouterProps) => {
             {/* <Text>4.4 * </Text> */}
             <AntDesignIcon name={'edit'} size={20} color={'gray'} />
           </TouchableOpacity>
-          {/* <TouchableOpacity
-            onPress={() => deleteTask(item.id)}
-            style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-           
-            <AntDesignIcon name={'delete'} size={20} color={'gray'} />
-          </TouchableOpacity> */}
+
         </View>
 
         <Text style={styles.description} numberOfLines={4}>{item?.description}</Text>
-        <Text style={{ color: 'skyblue', textAlign: 'right' }} numberOfLines={4}>View</Text>
       </View>
     </TouchableOpacity>)
   }

@@ -7,7 +7,7 @@ import firestore from '@react-native-firebase/firestore';
 import { Props } from '../../root/navigation'
 import TaskList from './task_list'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import { taskListRequest } from '../../store/sagas/tasksActions'
+import { taskListRequest } from '../../store/constants/tasksActions'
 import NotFound from '../../components/notfound'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
@@ -59,16 +59,14 @@ const Home = ({ navigation }: Props) => {
   useEffect(() => {
     dispatch(taskListRequest())
   }, [])
-  
+
   if (profile_data) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-
-        <TaskList navigation={navigation} resto_list={task_list} />
-
-
-
-        {/* <NotFound /> */}
+        {(task_list && task_list.length > 0) ?
+          <TaskList navigation={navigation} resto_list={task_list} />
+          : <NotFound />
+        }
 
       </SafeAreaView>
     )

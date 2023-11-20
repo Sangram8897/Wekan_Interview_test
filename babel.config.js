@@ -6,6 +6,16 @@ module.exports = {
   'module:metro-react-native-babel-preset',
   ],
   plugins: [
-  "react-native-reanimated/plugin",
+  ["module-resolver", {
+    "alias": {
+      "components": "./app/components",
+      "containers": "./app/containers",
+      "store": "./app/store",
+      "config": "./app/config",
+      "hooks": "./app/hooks",
+      "styles": "./app/styles",
+    }
+  }],
+
   ],
   };

@@ -1,20 +1,14 @@
 import React, { useCallback, useReducer, useEffect } from "react";
-import {
-    SafeAreaView,
-    StyleSheet,
-    Keyboard,
-    Platform,
-} from "react-native";
+import { SafeAreaView, Keyboard, Platform, } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
-import { addTaskRequest, editTaskRequest, taskListRequest, tasksListSuccess } from "../../../store/sagas/tasksActions";
-import Input from "../../../components/input";
-import { formReducer } from "../../../components/formReducer";
-import Button from "../../../components/button";
-import DropdownComp from "../../../components/dropdown";
-import DatePickerComp from "../../../components/datepicker";
+import { addTaskRequest, editTaskRequest, taskListRequest } from "store/constants/tasksActions";
+
+import { formReducer } from "store/reducer/formReducer";
 import moment from "moment";
-import { task_status } from "../../../config/variables";
-import { Colors } from "../../../style/colors";
+import { task_status } from "config/variables";
+import { Colors } from "styles/colors";
+
+import { Input, Button, DropdownComp, DatePickerComp } from 'components'
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
@@ -91,7 +85,7 @@ const AddTask = ({ route, navigation, }) => {
                 textAlignVertical="top"
                 numberOfLines={6}
                 minHeight={140}
-                height={Platform.OS=='ios'&&150}
+                height={Platform.OS == 'ios' && 150}
                 multiline={true}
                 keyboardType={'default'}
                 initialValue={formState.inputValues.description}
