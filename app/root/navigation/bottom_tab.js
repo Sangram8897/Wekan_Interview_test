@@ -1,7 +1,8 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Profile from '../../containers/profile';
 import Home from '../../containers/home';
-import Ionicons from 'react-native-vector-icons/FontAwesome';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { View, Text, TouchableOpacity } from 'react-native';
 
 function MyTabBar({ state, descriptors, navigation }) {
@@ -71,11 +72,12 @@ function BottomTab() {
                   ? 'user'
                   : 'user-o';
               } else if (route.name === 'Home') {
-                iconName = focused ? 'tasks' : 'tasks';
+                iconName = focused ? 'layers' : 'layers-outline';
+                return <Ionicons name={iconName} size={size} color={color} />;
               }
   
               // You can return any component that you like here!
-              return <Ionicons name={iconName} size={size} color={color} />;
+              return <FontAwesome name={iconName} size={size} color={color} />;
             },
             tabBarActiveTintColor: 'tomato',
             tabBarInactiveTintColor: 'gray',

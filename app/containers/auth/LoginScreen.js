@@ -1,4 +1,4 @@
-import React, { useState, createRef } from "react";
+import React, { useState, createRef, useEffect, useReducer, useCallback } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -12,17 +12,34 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 
-import auth from "@react-native-firebase/auth";
 import { loginRequest } from "../../store/sagas/authActions";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+
+import Input from "../../components/input";
+import Button from "../../components/button";
+import { formReducer } from "../../components/formReducer";
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch()
   const [userEmail, setUserEmail] = useState("sangrampaste8897@gmail.com");
   const [userPassword, setUserPassword] = useState("12345678");
   const [errortext, setErrortext] = useState("");
+  const user_data = useSelector(state => state.auth.user);
 
   const passwordInputRef = createRef();
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+      username: "",
+      password: ""
+    },
+    inputValidities: {
+      username: true,
+      password: true
+    },
+    formIsValid: true,
+  });
+
 
   const handleSubmitPress = () => {
     setErrortext("");
@@ -37,29 +54,20 @@ const LoginScreen = ({ navigation }) => {
     console.log('userEmail, userPassword', userEmail, userPassword);
     dispatch(loginRequest(userEmail, userPassword))
 
-    // auth()
-    //   .signInWithEmailAndPassword(userEmail, userPassword)
-    //   .then((user) => {
-    //     console.log('user',user);
-    //     // If server response message same as Data Matched
-    //     if (user) navigation.replace("Home");
-    //   })
-    //   .catch((error) => {
-    //     console.log('kut yetoy',userEmail, userPassword,error);
-    //     if (error.code === "auth/invalid-email")
-    //       setErrortext(error.message);
-    //     else if (error.code === "auth/user-not-found")
-    //       setErrortext("No User Found");
-    //     else {
-    //       setErrortext(
-    //         "Please check your email id or password"
-    //       );
-    //     }
-    //   });
   };
 
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        isValid: inputValidity,
+        input: inputIdentifier
+      })
+    }, [dispatchFormState]);
+
   return (
-    <SafeAreaView style={styles.mainBody}>
+    <SafeAreaView style={styles.container}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
@@ -71,61 +79,52 @@ const LoginScreen = ({ navigation }) => {
         <View>
           <KeyboardAvoidingView enabled>
 
-            <View style={styles.sectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserEmail) =>
-                  setUserEmail(UserEmail)
-                }
-                placeholder="Enter Email"
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                returnKeyType="next"
+              <Input
+                id='username'
+                keyboardType={'default'}
+                initialValue={formState.inputValues.username}
+                initialValid={formState.inputValidities.username}
+                required={true}
+                onInputChange={inputChangeHandler}
                 onSubmitEditing={() =>
                   passwordInputRef.current &&
                   passwordInputRef.current.focus()
                 }
-                underlineColorAndroid="#f000"
-                blurOnSubmit={false}
+                placeholder={'User name'}
+              //   inputAccessoryViewID={inputAccessoryViewID}
               />
-            </View>
-            <View style={styles.sectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserPassword) =>
-                  setUserPassword(UserPassword)
-                }
-                placeholder="Enter Password"
-                placeholderTextColor="#8b9cb5"
-                keyboardType="default"
-                ref={passwordInputRef}
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
+
+              <Input
+                id='password'
+                keyboardType={'default'}
+                initialValue={formState.inputValues.password}
+                initialValid={formState.inputValidities.password}
+                required={true}
                 secureTextEntry={true}
-                underlineColorAndroid="#f000"
-                returnKeyType="next"
+                onInputChange={inputChangeHandler}
+                placeholder={'Password'}
+                onSubmitEditing={Keyboard.dismiss}
+              // inputAccessoryViewID={inputAccessoryViewID}
               />
-            </View>
+           
             {errortext != "" ? (
               <Text style={styles.errorTextStyle}>
                 {" "}
                 {errortext}{" "}
               </Text>
             ) : null}
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
+
+            <Button
+              disabled={!formState.inputValues.username || !formState.inputValues.password}
+              backgroundColor="#7DE24E"
+              label="LOGIN"
               onPress={handleSubmitPress}
-            >
-              <Text style={styles.buttonTextStyle}>
-                LOGIN
-              </Text>
-            </TouchableOpacity>
+            />
+
             <Text
               style={styles.registerTextStyle}
               onPress={() =>
-                navigation.navigate("RegisterScreen")
+                navigation.replace("SignInScreen")
               }
             >
               New Here ? Register
@@ -133,31 +132,13 @@ const LoginScreen = ({ navigation }) => {
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
-      <Text
-        style={{
-          fontSize: 18,
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        React Native Firebase Authentication
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        www.aboutreact.com
-      </Text>
     </SafeAreaView>
   );
 };
 export default LoginScreen;
 
 const styles = StyleSheet.create({
-  mainBody: {
+  container: {
     flex: 1,
     justifyContent: "center",
     backgroundColor: "#fff",
@@ -165,47 +146,13 @@ const styles = StyleSheet.create({
   },
   sectionStyle: {
     flexDirection: "row",
-    height: 40,
-    marginTop: 20,
-    marginLeft: 35,
-    marginRight: 35,
-    margin: 10,
-  },
-  buttonStyle: {
-    backgroundColor: "#7DE24E",
-    borderWidth: 0,
-    color: "#FFFFFF",
-    borderColor: "#7DE24E",
-    height: 40,
-    alignItems: "center",
-    borderRadius: 30,
-    marginLeft: 35,
-    marginRight: 35,
-    marginTop: 20,
-    marginBottom: 25,
-  },
-  buttonTextStyle: {
-    color: "#FFFFFF",
-    paddingVertical: 10,
-    fontSize: 16,
-  },
-  inputStyle: {
-    flex: 1,
-    height: 50,
-    color: "white",
-    padding: 15,
-    color: 'red',
-    borderWidth: 1,
-    borderRadius: 10,
-    borderColor: "#dadae8",
   },
   registerTextStyle: {
-    color: "#FFFFFF",
+    color: "red",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 14,
     alignSelf: "center",
-    padding: 10,
   },
   errorTextStyle: {
     color: "red",
@@ -213,3 +160,5 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
 });
+
+

@@ -1,45 +1,43 @@
 import React from "react";
 import {
-  View,
   Text,
-  TouchableNativeFeedback,
   TouchableOpacity,
-  Appearance,
-  useColorScheme,
 } from "react-native";
 
 export default function Button({
   onPress = () => { },
   label = "welcome",
   textColor = 'black',
-  backgroundColor='pink',
+  backgroundColor = 'pink',
   borderColor,
   style,
   textStyle,
+  disabled = false,
   borderWidth = 0,
 }) {
   return (
     <TouchableOpacity
       onPress={onPress}
+      activeOpacity={0.5}
+     // disabled={disabled}
       style={[{
-         width:'100%',
-
+        width: '90%',
         // width: '100%',
         alignSelf: 'center',
+        marginVertical: 16,
         paddingVertical: 15,
-        marginVertical:4,
         borderWidth: borderWidth,
         borderColor: borderColor,
         overflow: 'hidden',
-        backgroundColor: backgroundColor,
+        backgroundColor: disabled ? 'gray' : backgroundColor,
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 3,
+        borderRadius: 5,
       }, style]}
     >
 
       <Text
-        style={[{ fontSize: 16, color: textColor }, textStyle]}//fontFamily: "RobotoCondensed-Bold"
+        style={[{ fontSize: 16, color: textColor, fontFamily: "Montserrat-ExtraBold" }, textStyle]}
       >
         {label}
       </Text>

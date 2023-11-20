@@ -1,7 +1,6 @@
-// https://aboutreact.com/react-native-firebase-authentication/
 
-// Import React and Component
-import React, { useState, createRef } from "react";
+
+import React, { useState, createRef,useCallback } from "react";
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,46 +15,75 @@ import {
 } from "react-native";
 
 import auth from "@react-native-firebase/auth";
+import { loginRequest } from "../../store/sagas/authActions";
+import { useDispatch, useSelector } from "react-redux";
+import firestore from '@react-native-firebase/firestore';
+import { profileRequest } from "../../store/sagas/profileActions";
 
-const SignInScreen = ({ navigation }) => {
+const formReducer = (state, action) => {
+  if (action.type === FORM_INPUT_UPDATE) {
+      const updatedValues = {
+          ...state.inputValues,
+          [action.input]: action.value,
+      };
+      const updatedValidities = {
+          ...state.inputValidities,
+          [action.input]: action.isValid,
+      };
+      let updatedFormIsValid = true;
+      for (const key in updatedValidities) {
+          updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
+      }
+      return {
+          formIsValid: updatedFormIsValid,
+          inputValues: updatedValues,
+          inputValidities: updatedValidities,
+      }
+  }
+  return state;
+}
+
+const CreateProfile = ({ navigation }) => {
+  const dispatch = useDispatch()
+  const [formState, dispatchFormState] = useReducer(formReducer, {
+    inputValues: {
+        name: 'Sundar kumar',
+        package_image_url:null
+    },
+    inputValidities: {
+        name: false,
+        package_image_url:false,
+    },
+    formIsValid: false
+});
+const inputChangeHandler = useCallback(
+  (inputIdentifier, inputValue, inputValidity) => {
+      dispatchFormState({
+          type: FORM_INPUT_UPDATE,
+          value: inputValue,
+          input: inputIdentifier,
+          isValid: inputValidity,
+      })
+  }, [dispatchFormState]);
+
   const [userEmail, setUserEmail] = useState("");
   const [userPassword, setUserPassword] = useState("");
   const [errortext, setErrortext] = useState("");
+  const user_data = useSelector(state => state.auth.user);
 
   const passwordInputRef = createRef();
 
-  const handleSubmitPress = () => {
-     setErrortext("");
-    // if (!userEmail) {
-    //   alert("Please fill Email");
-    //   return;
-    // }
-    // if (!userPassword) {
-    //   alert("Please fill Password");
-    //   return;
-    // }
-    auth()
-      .createUserWithEmailAndPassword(userEmail, userPassword)
-      .then((user) => {
-        console.log('user',user);
-        navigation.navigate('LoginScreen')
-        // If server response message same as Data Matched
-       // if (user) navigation.replace("HomeScreen");
-      })
-      .catch((error) => {
-        console.log(error);
-        if (error.code === "auth/invalid-email")
-          setErrortext(error.message);
-        else if (error.code === "auth/user-not-found")
-          setErrortext("No User Found");
-        else {
-          setErrortext(
-            "Please check your email id or password"
-          );
-        }
-      });
-  };
+  //console.log('user_data', user_data);
+  const handleSubmitPress = async () => {
 
+    dispatch(profileRequest(user_data.uid, {
+      name: userEmail,
+      age: userPassword,
+      address: 'At post Adare,Chiplun, Ratnagiri',
+      mobile_number: '9021010551'
+    }))
+
+  }
   return (
     <SafeAreaView style={styles.mainBody}>
       <ScrollView
@@ -66,6 +94,7 @@ const SignInScreen = ({ navigation }) => {
           alignContent: "center",
         }}
       >
+        <Text style={{ fontSize: 20, textAlign: 'center' }}>Create Profile</Text>
         <View>
           <KeyboardAvoidingView enabled>
 
@@ -117,42 +146,19 @@ const SignInScreen = ({ navigation }) => {
               onPress={handleSubmitPress}
             >
               <Text style={styles.buttonTextStyle}>
-                SIGN IN
+                Create
               </Text>
             </TouchableOpacity>
-            <Text
-              style={styles.registerTextStyle}
-              onPress={() =>
-                navigation.navigate("RegisterScreen")
-              }
-            >
-              New Here ? Register
-            </Text>
+    
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
-      <Text
-        style={{
-          fontSize: 18,
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        React Native Firebase Authentication
-      </Text>
-      <Text
-        style={{
-          fontSize: 16,
-          textAlign: "center",
-          color: "white",
-        }}
-      >
-        www.aboutreact.com
-      </Text>
+
+
     </SafeAreaView>
   );
 };
-export default SignInScreen;
+export default CreateProfile;
 
 const styles = StyleSheet.create({
   mainBody: {
@@ -189,7 +195,7 @@ const styles = StyleSheet.create({
   },
   inputStyle: {
     flex: 1,
-    height:50,
+    height: 50,
     color: "white",
     padding: 15,
     color: 'red',

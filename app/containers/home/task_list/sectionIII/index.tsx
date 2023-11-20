@@ -8,6 +8,9 @@ import {
   TouchableOpacity
 } from 'react-native';
 import { NavigationProp } from "@react-navigation/native";
+import AntDesignIcon from 'react-native-vector-icons/AntDesign';
+import { useAppDispatch } from '../../../../store/hooks';
+import { deleteTaskRequest, taskListRequest } from '../../../../store/sagas/tasksActions';
 
 interface RouterProps {
   navigation: NavigationProp<any, any>;
@@ -17,25 +20,41 @@ interface RouterProps {
 type ItemProps = { title: string };
 
 const SectionIII = ({ navigation, resto_list }: RouterProps) => {
+  const dispatch = useAppDispatch()
 
-  const Item = ({ title }: ItemProps) => (
-    <TouchableOpacity
+  const deleteTask = async (id: String) => {
+    await dispatch(deleteTaskRequest(id))
+    dispatch(taskListRequest())
+
+  }
+  const Item = ({ item }: any) => {
+    console.log('88897', item);
+
+    return (<TouchableOpacity
       onPress={() => navigation.navigate('RestoInfo')}
       style={styles.item}>
-      <Image
+      {/* <Image
         style={{ width: '100%', height: 170, resizeMode: 'cover' }}
-        source={require('./../../../../assets/images/image2.jpg')} />
+        source={require('./../../../../assets/images/image2.jpg')} /> */}
       <View style={{ padding: 12 }}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flexDirection: 'column', flex: 1 }}>
-            <Text style={styles.title}>{'ITR Master Chef Creation'}</Text>
+            <Text style={styles.title}>{item?.title}</Text>
             <Text style={styles.sub_title}>{'North Indian'}</Text>
             <Text style={styles.sub_title}>{'45 - 55 min . 2km'}</Text>
           </View>
-          <View
-            style={{ height: 20, width: 50, backgroundColor: 'red', justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-            <Text>4.4 * </Text>
-          </View>
+          <TouchableOpacity
+            onPress={() => { navigation.navigate('AddTask', item) }}
+            style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
+            {/* <Text>4.4 * </Text> */}
+            <AntDesignIcon name={'edit'} size={20} color={'gray'} />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => deleteTask(item.id)}
+            style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
+            {/* <Text>4.4 * </Text> */}
+            <AntDesignIcon name={'delete'} size={20} color={'red'} />
+          </TouchableOpacity>
         </View>
 
         <View style={{ flexDirection: 'row' }}>
@@ -47,8 +66,8 @@ const SectionIII = ({ navigation, resto_list }: RouterProps) => {
           </View>
         </View>
       </View>
-    </TouchableOpacity>
-  );
+    </TouchableOpacity>)
+  }
 
   return (
     <View style={styles.container}>
@@ -56,7 +75,7 @@ const SectionIII = ({ navigation, resto_list }: RouterProps) => {
         style={{ paddingVertical: 8 }}
         scrollEnabled={false}
         data={resto_list}
-        renderItem={({ item }) => <Item title={item.title} />}
+        renderItem={({ item }) => <Item item={item} />}
         keyExtractor={item => item.id}
       />
     </View>
@@ -78,12 +97,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 5, height: 5 },
     shadowOpacity: 0.8,
     shadowRadius: 6,
-
   },
   title: {
-    fontSize: 22,
+    fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
-    color:'black'
+    color: 'black'
   },
   sub_title: {
     fontSize: 12,

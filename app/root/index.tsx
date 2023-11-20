@@ -15,8 +15,9 @@ import LoginScreen from '../containers/auth/LoginScreen';
 function App() {
   return (
     <View style={{ flex: 1 }}>
-      
+       <Provider store={store}>
       <AppNavigation />
+      </Provider>
       {/* </GestureHandlerRootView> */}
     </View>
   );
