@@ -1,155 +1,128 @@
 
 
-import React, { useState, createRef,useCallback } from "react";
+import React, { useState, useRef, useEffect, createRef, useCallback, useReducer } from "react";
 import {
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   ScrollView,
-  Image,
   Keyboard,
-  TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
 
-import auth from "@react-native-firebase/auth";
-import { loginRequest } from "../../store/sagas/authActions";
 import { useDispatch, useSelector } from "react-redux";
-import firestore from '@react-native-firebase/firestore';
 import { profileRequest } from "../../store/sagas/profileActions";
+import { formReducer } from "../../components/formReducer";
+import Input from "../../components/input";
+import Button from "../../components/button";
 
-const formReducer = (state, action) => {
-  if (action.type === FORM_INPUT_UPDATE) {
-      const updatedValues = {
-          ...state.inputValues,
-          [action.input]: action.value,
-      };
-      const updatedValidities = {
-          ...state.inputValidities,
-          [action.input]: action.isValid,
-      };
-      let updatedFormIsValid = true;
-      for (const key in updatedValidities) {
-          updatedFormIsValid = updatedFormIsValid && updatedValidities[key]
-      }
-      return {
-          formIsValid: updatedFormIsValid,
-          inputValues: updatedValues,
-          inputValidities: updatedValidities,
-      }
-  }
-  return state;
-}
+const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
-const CreateProfile = ({ navigation }) => {
+const CreateProfile = ({ navigation, route }) => {
+  const { item } = route?.params;
   const dispatch = useDispatch()
+  const user_data = useSelector(state => state.auth.user);
+  const input1Ref = useRef(null)
+
+  useEffect(() => {
+    navigation.setOptions({
+      title: item ? 'Update Profile' : 'Create Profile',
+    });
+  }, []);
+
+  useEffect(() => {
+    // Open the keyboard when the component mounts
+    // input1Ref.current && input1Ref.current.focus();
+  }, []);
+
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-        name: 'Sundar kumar',
-        package_image_url:null
+      name: item ? item.name : '',
+      mobile_number: item ? item.mobile_number : '',
+      address: item ? item.address : ""
     },
     inputValidities: {
-        name: false,
-        package_image_url:false,
+      name: false,
+      mobile_number: false,
+      address: false
     },
     formIsValid: false
-});
-const inputChangeHandler = useCallback(
-  (inputIdentifier, inputValue, inputValidity) => {
+  });
+
+  const inputChangeHandler = useCallback(
+    (inputIdentifier, inputValue, inputValidity) => {
       dispatchFormState({
-          type: FORM_INPUT_UPDATE,
-          value: inputValue,
-          input: inputIdentifier,
-          isValid: inputValidity,
+        type: FORM_INPUT_UPDATE,
+        value: inputValue,
+        input: inputIdentifier,
+        isValid: inputValidity,
       })
-  }, [dispatchFormState]);
+    }, [dispatchFormState]);
 
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
-  const [errortext, setErrortext] = useState("");
-  const user_data = useSelector(state => state.auth.user);
-
-  const passwordInputRef = createRef();
-
-  //console.log('user_data', user_data);
   const handleSubmitPress = async () => {
-
     dispatch(profileRequest(user_data.uid, {
-      name: userEmail,
-      age: userPassword,
-      address: 'At post Adare,Chiplun, Ratnagiri',
-      mobile_number: '9021010551'
+      name: formState.inputValues.name,
+      address: formState.inputValues.address,
+      mobile_number: formState.inputValues.mobile_number,
+      email: user_data.email
     }))
-
   }
+
   return (
     <SafeAreaView style={styles.mainBody}>
       <ScrollView
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           flex: 1,
-          justifyContent: "center",
           alignContent: "center",
         }}
       >
-        <Text style={{ fontSize: 20, textAlign: 'center' }}>Create Profile</Text>
         <View>
           <KeyboardAvoidingView enabled>
+            <Input
+              id='name'
+              ref={input1Ref}
+              keyboardType={'default'}
+              initialValue={formState.inputValues.name}
+              initialValid={formState.inputValidities.name}
+              required={true}
+              onInputChange={inputChangeHandler}
+              placeholder={'name'}
+              onSubmitEditing={Keyboard.dismiss}
+            />
 
-            <View style={styles.sectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserEmail) =>
-                  setUserEmail(UserEmail)
-                }
-                placeholder="Enter Email"
-                placeholderTextColor="#8b9cb5"
-                autoCapitalize="none"
-                keyboardType="email-address"
-                returnKeyType="next"
-                onSubmitEditing={() =>
-                  passwordInputRef.current &&
-                  passwordInputRef.current.focus()
-                }
-                underlineColorAndroid="#f000"
-                blurOnSubmit={false}
-              />
-            </View>
-            <View style={styles.sectionStyle}>
-              <TextInput
-                style={styles.inputStyle}
-                onChangeText={(UserPassword) =>
-                  setUserPassword(UserPassword)
-                }
-                placeholder="Enter Password"
-                placeholderTextColor="#8b9cb5"
-                keyboardType="default"
-                ref={passwordInputRef}
-                onSubmitEditing={Keyboard.dismiss}
-                blurOnSubmit={false}
-                secureTextEntry={true}
-                underlineColorAndroid="#f000"
-                returnKeyType="next"
-              />
-            </View>
-            {errortext != "" ? (
-              <Text style={styles.errorTextStyle}>
-                {" "}
-                {errortext}{" "}
-              </Text>
-            ) : null}
-            <TouchableOpacity
-              style={styles.buttonStyle}
-              activeOpacity={0.5}
+            <Input
+              id='mobile_number'
+              keyboardType={'default'}
+              initialValue={formState.inputValues.mobile_number}
+              initialValid={formState.inputValidities.mobile_number}
+              required={true}
+              onInputChange={inputChangeHandler}
+              placeholder={'mobile_number'}
+              onSubmitEditing={Keyboard.dismiss}
+            />
+
+            <Input
+              id='address'
+              keyboardType={'default'}
+              initialValue={formState.inputValues.address}
+              initialValid={formState.inputValidities.address}
+              numberOfLines={3}
+              multiline={true}
+              required={true}
+              onInputChange={inputChangeHandler}
+              placeholder={'address'}
+              onSubmitEditing={Keyboard.dismiss}
+            />
+
+            <Button
+              disabled={!formState.formIsValid}
+              backgroundColor="#7DE24E"
+              label={item ? "UPDATE" : "CREATE"}
               onPress={handleSubmitPress}
-            >
-              <Text style={styles.buttonTextStyle}>
-                Create
-              </Text>
-            </TouchableOpacity>
-    
+            />
+
           </KeyboardAvoidingView>
         </View>
       </ScrollView>
@@ -163,9 +136,9 @@ export default CreateProfile;
 const styles = StyleSheet.create({
   mainBody: {
     flex: 1,
-    justifyContent: "center",
     backgroundColor: "#fff",
     alignContent: "center",
+    paddingTop: 20
   },
   sectionStyle: {
     flexDirection: "row",

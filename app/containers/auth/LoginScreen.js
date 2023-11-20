@@ -2,18 +2,15 @@ import React, { useState, createRef, useEffect, useReducer, useCallback } from "
 import {
   SafeAreaView,
   StyleSheet,
-  TextInput,
   View,
   Text,
   ScrollView,
-  Image,
   Keyboard,
-  TouchableOpacity,
   KeyboardAvoidingView,
 } from "react-native";
 
 import { loginRequest } from "../../store/sagas/authActions";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import Input from "../../components/input";
 import Button from "../../components/button";
@@ -22,10 +19,6 @@ const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
 const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch()
-  const [userEmail, setUserEmail] = useState("sangrampaste8897@gmail.com");
-  const [userPassword, setUserPassword] = useState("12345678");
-  const [errortext, setErrortext] = useState("");
-  const user_data = useSelector(state => state.auth.user);
 
   const passwordInputRef = createRef();
   const [formState, dispatchFormState] = useReducer(formReducer, {
@@ -40,20 +33,8 @@ const LoginScreen = ({ navigation }) => {
     formIsValid: true,
   });
 
-
   const handleSubmitPress = () => {
-    setErrortext("");
-    // if (!userEmail) {
-    //   alert("Please fill Email");
-    //   return;
-    // }
-    // if (!userPassword) {
-    //   alert("Please fill Password");
-    //   return;
-    // }
-    console.log('userEmail, userPassword', userEmail, userPassword);
-    dispatch(loginRequest(userEmail, userPassword))
-
+    dispatch(loginRequest(formState.inputValues.username, formState.inputValues.password))
   };
 
   const inputChangeHandler = useCallback(
@@ -106,13 +87,6 @@ const LoginScreen = ({ navigation }) => {
                 onSubmitEditing={Keyboard.dismiss}
               // inputAccessoryViewID={inputAccessoryViewID}
               />
-           
-            {errortext != "" ? (
-              <Text style={styles.errorTextStyle}>
-                {" "}
-                {errortext}{" "}
-              </Text>
-            ) : null}
 
             <Button
               disabled={!formState.inputValues.username || !formState.inputValues.password}
@@ -124,7 +98,7 @@ const LoginScreen = ({ navigation }) => {
             <Text
               style={styles.registerTextStyle}
               onPress={() =>
-                navigation.replace("SignInScreen")
+                navigation.navigate("SignInScreen")
               }
             >
               New Here ? Register
@@ -144,20 +118,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     alignContent: "center",
   },
-  sectionStyle: {
-    flexDirection: "row",
-  },
   registerTextStyle: {
     color: "red",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 14,
     alignSelf: "center",
-  },
-  errorTextStyle: {
-    color: "red",
-    textAlign: "center",
-    fontSize: 14,
   },
 });
 
