@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 import { NavigationProp } from "@react-navigation/native";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
-import { useAppDispatch } from '../../../../store/hooks';
-import { deleteTaskRequest, taskListRequest } from '../../../../store/sagas/tasksActions';
+import { useAppDispatch } from '../../../store/hooks';
+import { deleteTaskRequest, taskListRequest } from '../../../store/sagas/tasksActions';
+import { task_status_colors, task_status_obj } from '../../../config/variables';
 
 interface RouterProps {
   navigation: NavigationProp<any, any>;
@@ -19,7 +20,7 @@ interface RouterProps {
 
 type ItemProps = { title: string };
 
-const SectionIII = ({ navigation, resto_list }: RouterProps) => {
+const TaskList = ({ navigation, resto_list }: RouterProps) => {
   const dispatch = useAppDispatch()
 
   const deleteTask = async (id: String) => {
@@ -31,17 +32,18 @@ const SectionIII = ({ navigation, resto_list }: RouterProps) => {
     console.log('88897', item);
 
     return (<TouchableOpacity
-      onPress={() => navigation.navigate('RestoInfo')}
+      onPress={() => navigation.navigate('TaskInfo', { item: item })}
       style={styles.item}>
-      {/* <Image
-        style={{ width: '100%', height: 170, resizeMode: 'cover' }}
-        source={require('./../../../../assets/images/image2.jpg')} /> */}
+
       <View style={{ padding: 12 }}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flexDirection: 'column', flex: 1 }}>
             <Text style={styles.title}>{item?.title}</Text>
-            <Text style={styles.sub_title}>{'North Indian'}</Text>
-            <Text style={styles.sub_title}>{'45 - 55 min . 2km'}</Text>
+
+            <Text style={[styles.taskStatusText, {
+              color: task_status_colors[item?.status]
+            }]}>{item?.status ? task_status_obj[item?.status] : 'DRAFT'}</Text>
+
           </View>
           <TouchableOpacity
             onPress={() => { navigation.navigate('AddTask', item) }}
@@ -49,22 +51,16 @@ const SectionIII = ({ navigation, resto_list }: RouterProps) => {
             {/* <Text>4.4 * </Text> */}
             <AntDesignIcon name={'edit'} size={20} color={'gray'} />
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => deleteTask(item.id)}
             style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-            {/* <Text>4.4 * </Text> */}
-            <AntDesignIcon name={'delete'} size={20} color={'red'} />
-          </TouchableOpacity>
+           
+            <AntDesignIcon name={'delete'} size={20} color={'gray'} />
+          </TouchableOpacity> */}
         </View>
 
-        <View style={{ flexDirection: 'row' }}>
-          <View style={{ flexDirection: 'row', flex: 2 }}>
-            <Text style={styles.sub_title}>{'Extra 10% off'}</Text>
-          </View>
-          <View style={{ flexDirection: 'row', flex: 3 }}>
-            <Text style={styles.sub_title}>{'50% off upto 100'}</Text>
-          </View>
-        </View>
+        <Text style={styles.description} numberOfLines={4}>{item?.description}</Text>
+        <Text style={{ color: 'skyblue', textAlign: 'right' }} numberOfLines={4}>View</Text>
       </View>
     </TouchableOpacity>)
   }
@@ -99,14 +95,18 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   title: {
-    fontSize: 16,
+    fontSize: 18,
     fontFamily: 'Poppins-SemiBold',
     color: 'black'
   },
-  sub_title: {
-    fontSize: 12,
-    fontFamily: 'Montserrat-Regular',
+  taskStatusText: {
+    fontSize: 14,
+    fontFamily: 'Montserrat-Bold',
   },
+  description: {
+    fontSize: 14,
+    fontFamily: 'Montserrat-Regular',
+  }
 });
 
-export default SectionIII;
+export default TaskList;

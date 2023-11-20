@@ -16,7 +16,7 @@ import AddTask from '../../containers/home/add_task';
 
 type RootStackParamList = {
   Home: undefined;
-  RestoInfo: undefined;
+  TaskInfo: undefined;
   AddTask: undefined;
   LoginScreen: undefined;
   Dashboard: undefined;
@@ -46,28 +46,27 @@ function AppNavigation() {
   // }, []);
 
   return (
-      <NavigationContainer
-        ref={navigationRef}
-      >
+    <NavigationContainer
+      ref={navigationRef}
+    >
 
-        <RootStack.Navigator>
-          {
-            !user_data ?
-              <>
-                <RootStack.Screen name="LoginScreen" component={LoginScreen} />
-                <RootStack.Screen name="SignInScreen" component={SignInScreen} />
-              </> :
-              <>
-                <RootStack.Screen name="Dashboard" component={BottomTab} options={{ headerShown: false }} />
-                <RootStack.Screen name="RestoInfo" component={RestoInfo} />
-                <RootStack.Screen name="AddTask" component={AddTask} />
+      <RootStack.Navigator>
+        {
+          !user_data ?
+            <>
+              <RootStack.Screen name="LoginScreen" component={LoginScreen} options={{ headerTitle: "Log In" }} />
+              <RootStack.Screen name="SignInScreen" component={SignInScreen} options={{ headerTitle: "Create Account" }} />
+            </> :
+            <>
+              <RootStack.Screen name="Dashboard" component={BottomTab} options={{ headerShown: false }} />
+              <RootStack.Screen name="TaskInfo" component={RestoInfo} options={{ headerTitle: 'Task Details' }} />
+              <RootStack.Screen name="AddTask" component={AddTask} />
+              <RootStack.Screen name="CreateProfile" component={CreateProfile} />
+            </>
+        }
 
-                <RootStack.Screen name="CreateProfile" component={CreateProfile} />
-              </>
-          }
-
-        </RootStack.Navigator>
-      </NavigationContainer>
+      </RootStack.Navigator>
+    </NavigationContainer>
   );
 }
 

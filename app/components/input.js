@@ -70,7 +70,7 @@ const Input = (props) => {
                     onBlur={lostFocusHandler}
                     onSubmitEditing={props.onSubmitEditing}
                     inputAccessoryViewID={'uniqueID'}
-                    // textAlignVertical="top"
+                    textAlignVertical="top"
                     placeholder={props.placeholder}
 
                 />
@@ -100,7 +100,7 @@ const styles = StyleSheet.create({
     inputContainer: {
         marginVertical: 8,
         minHeight: Platform.OS == 'ios' ? 55 : 50,
-        borderWidth: 1,
+        borderWidth: 0.5,
         width: '90%',
         alignSelf: 'center',
         justifyContent: 'center',
