@@ -1,10 +1,10 @@
 import React, { useCallback, useReducer, useEffect } from "react";
-import { SafeAreaView, Keyboard, Platform, } from "react-native";
+import { Keyboard, Platform, } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { addTaskRequest, editTaskRequest, taskListRequest } from "store/constants/tasksActions";
 
-import { formReducer } from "store/reducer/formReducer";
+import { formReducer, FormState } from "store/reducer/formReducer";
 import { task_status } from "config/variables";
 import { Colors } from "styles/colors";
 
@@ -12,17 +12,16 @@ import { Input, Button, DropdownComp, DatePickerComp, Container } from 'componen
 import { RootState } from "store/configure_store";
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
-interface RouterProps {
-    navigation: NavigationProp<any, any>;
-    route: RouteProp<any, any>;
-}
+// interface RouterProps {
+//     navigation: NavigationProp<any, any>;
+//     route: RouteProp<any, any>;
+// }
 
-const AddTask = ({ route, navigation, }: RouterProps) => {
+
+const AddTask = ({ route, navigation, }) => {
     const dispatch = useDispatch()
     const item = route?.params;
-    const user_data = useSelector((state: RootState) => state.auth.user);
-    console.log('AddTaskitem', item);
-
+    const user_data = useSelector((state) => state.auth.user);
 
     useEffect(() => {
         navigation.setOptions({
@@ -30,22 +29,25 @@ const AddTask = ({ route, navigation, }: RouterProps) => {
         });
     }, []);
 
-    const [formState, dispatchFormState] = useReducer(formReducer, {
+    const initialFormState = {
         inputValues: {
-            title: item ? item?.title : '',
-            description: item ? item?.description : '',
-            due_date: item?.due_date ? new Date(item?.due_date) : null,
-            status: item ? item?.status : null,
+            title: item ? item.title : '',
+            description: item ? item.description : '',
+            due_date: item?.due_date ? new Date(item.due_date).toString() : null,
+            status: item ? item.status : null,
         },
         inputValidities: {
-            name: false,
-            package_image_url: false,
+            title: false,
+            description: false,
+            due_date: false,
+            status: false,
         },
-        formIsValid: false
-    });
+        formIsValid: false,
+    };
+    const [formState, dispatchFormState] = useReducer(formReducer, initialFormState);
 
     const inputChangeHandler = useCallback(
-        (inputIdentifier: string, inputValue: any, inputValidity: boolean) => {
+        (inputIdentifier, inputValue, inputValidity) => {
             dispatchFormState({
                 type: FORM_INPUT_UPDATE,
                 value: inputValue,

@@ -5,20 +5,26 @@ const INPUT_BLUR = 'INPUT_BLUR';
 const INPUT_CHANGE = 'INPUT_CHANGE';
 
 interface InputProps extends TextInputProps {
-    label?: string;
-    initialValue?: string;
-    initialValid?: boolean;
-    onInputChange: (id: string, value: string, isValid: boolean) => void;
-    containerStyle: StyleProp<ViewStyle>;
-    labelStyle: StyleProp<TextStyle>;
-    textInputStyle: StyleProp<TextStyle>;
-    required: boolean;
-    email: string;
-    min: number;
-    max: number;
-    minLength: number;
     id: string;
-    errorText: string
+    label: string;
+    initialValue: string;
+    initialValid: boolean;
+    autoFocus?: boolean;
+    onInputChange: (id: string, value: string, isValid: boolean) => void;
+    onSubmitEditing?: () => void;
+    // containerStyle: StyleProp<ViewStyle>;
+    // labelStyle: StyleProp<TextStyle>;
+    // textInputStyle: StyleProp<TextStyle>;
+     required?: boolean;
+    // email: boolean;
+    // min: number;
+    // max: number;
+    // minLength: number;
+
+    // errorText?: string;
+     minHeight?: number;
+     height?: number | boolean;
+    // keyboardType: 'default' | 'numeric' | 'email-address' | 'phone-pad' ;
 }
 
 interface InputState {
@@ -45,14 +51,14 @@ const inputReducer = (state: InputState, action: any) => {
     }
 }
 
-const Input: React.FC<InputProps> = (props) => {
+const Input: React.FC<InputProps> = (props: any) => {
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue ? props.initialValue : '',
         isValid: props.initialValid,
         touched: false,
     });
 
-    const { onInputChange = () => { }, id, containerStyle = {}, labelStyle = {}, textInputStyle = {} } = props;
+    const { onInputChange = () => { }, id, } = props;
     useEffect(() => {
         // if(inputState.touched){
         onInputChange(id, inputState.value, inputState.isValid);
@@ -62,19 +68,19 @@ const Input: React.FC<InputProps> = (props) => {
     const textChangeHandler = (text: string) => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let isValid = true;
-        if (props.required && text.trim().length === 0) {
+        if (props?.required && text.trim().length === 0) {
             isValid = false;
         }
-        if (props.email && emailRegex.test(text.toLowerCase())) {
+        if (props?.email && emailRegex.test(text.toLowerCase())) {
             isValid = false;
         }
-        if (props.min != null && +text < props.min) {
+        if (props?.min != null && +text < props.min) {
             isValid = false;
         }
-        if (props.max != null && +text > props.max) {
+        if (props?.max != null && +text > props.max) {
             isValid = false;
         }
-        if (props.minLength != null && text.length < props.minLength) {
+        if (props?.minLength != null && text.length < props.minLength) {
             isValid = false;
         }
         dispatch({ type: INPUT_CHANGE, value: text, isValid: isValid })

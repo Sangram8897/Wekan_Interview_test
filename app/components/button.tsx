@@ -14,10 +14,10 @@ interface ButtonProps extends TouchableOpacity {
   textColor?: string;
   backgroundColor?: string;
   borderColor?: string;
-  style?: StyleProp<ViewStyle>;
-  textStyle?: StyleProp<TextStyle>;
-  disabled?: boolean;
-  borderWidth?: number;
+  style?: object;
+  textStyle?: object;
+  disabled?: boolean | undefined;
+  borderWidth?: number | undefined;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -30,7 +30,7 @@ const Button: React.FC<ButtonProps> = ({
   textStyle,
   disabled = false,
   borderWidth = 0,
-}) => {
+}): any => {
   return (
     <TouchableOpacity
       onPress={onPress}
