@@ -1,5 +1,5 @@
 import React, { createRef, useReducer, useCallback } from "react";
-import { SafeAreaView, StyleSheet, View, Text, ScrollView, Keyboard, KeyboardAvoidingView } from "react-native";
+import { SafeAreaView, StyleSheet, View, Text, ScrollView, Keyboard, KeyboardAvoidingView, Platform } from "react-native";
 import { Button, Input } from "components";
 import { Colors } from "styles/colors";
 import { formReducer } from "store/reducer/formReducer";
@@ -47,12 +47,11 @@ const Login = ({ navigation }) => {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           flex: 1,
-          justifyContent: "center",
-          alignContent: "center",
+
         }}
       >
         <View>
-          <KeyboardAvoidingView enabled>
+          <KeyboardAvoidingView behavior={Platform.OS=='ios'?'height':'position'} enabled>
 
             <Input
               required={true}

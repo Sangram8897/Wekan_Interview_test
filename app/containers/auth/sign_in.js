@@ -66,8 +66,6 @@ const SignIn = ({ navigation }) => {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={{
           flex: 1,
-          justifyContent: "center",
-          alignContent: "center",
         }}
       >
         <View>
