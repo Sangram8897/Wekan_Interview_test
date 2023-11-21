@@ -4,12 +4,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { addTaskRequest, editTaskRequest, taskListRequest } from "store/constants/tasksActions";
 
-import { formReducer, FormState } from "store/reducer/formReducer";
+import { formReducer } from "store/reducer/formReducer";
 import { task_status } from "config/variables";
 import { Colors } from "styles/colors";
 
 import { Input, Button, DropdownComp, DatePickerComp, Container } from 'components/index'
-import { RootState } from "store/configure_store";
+import moment from "moment";
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 // interface RouterProps {
@@ -60,7 +60,8 @@ const AddTask = ({ route, navigation, }) => {
         let data = {
             title: formState.inputValues.title,
             description: formState.inputValues.description,
-            due_date: formState.inputValues?.due_date ? formState.inputValues.due_date : "",
+            due_date: formState.inputValues?.due_date ?
+                moment(formState.inputValues?.due_date).format('YYYY-MM-DD') : null,
             status: formState.inputValues.status,
             uid: user_data?.uid
         }

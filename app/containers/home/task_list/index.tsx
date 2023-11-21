@@ -6,6 +6,8 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { deleteTaskRequest, taskListRequest } from 'store/constants/tasksActions';
 import { task_status_colors, task_status_obj } from 'config/variables';
 import { useDispatch } from 'react-redux';
+import moment from 'moment';
+import { Colors } from 'styles/colors';
 
 interface RouterProps {
   navigation: NavigationProp<any, any>;
@@ -37,6 +39,17 @@ const TaskList = ({ navigation, resto_list }: RouterProps) => {
             <Text style={[styles.taskStatusText, {
               color: task_status_colors[item?.status]
             }]}>{item?.status ? task_status_obj[item?.status] : 'DRAFT'}</Text>
+
+       
+
+            <Text style={[styles.taskStatusText]}>Due Date :
+
+            {item?.due_date && <Text style={[styles.dueDateText, {
+              color: Colors.BLUE_B1
+            }]}>
+              {moment(item?.due_date).format('DD-MMM')}
+            </Text>}
+</Text>
 
           </View>
           <TouchableOpacity
@@ -90,6 +103,10 @@ const styles = StyleSheet.create({
   taskStatusText: {
     fontSize: 14,
     fontFamily: 'Montserrat-Bold',
+  },
+  dueDateText: {
+    fontSize: 12,
+    fontFamily: 'Montserrat-Medium',
   },
   description: {
     fontSize: 14,
