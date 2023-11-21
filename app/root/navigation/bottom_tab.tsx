@@ -4,6 +4,7 @@ import Profile from 'containers/profile';
 import Home from 'containers/home';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Colors } from 'styles/colors';
 
 const Tab = createBottomTabNavigator();
 
@@ -11,6 +12,7 @@ function BottomTab() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
+        tabBarShowLabel:false,
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
@@ -24,14 +26,14 @@ function BottomTab() {
           // You can return any component that you like here!
           return <FontAwesome name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'blue',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: Colors.PRIMARY,
+        tabBarInactiveTintColor: Colors.GRAY_G3,
       })}
     >
       <Tab.Screen
         name="Home"
         component={Home}
-        options={{ tabBarLabel: 'Home' }}
+        options={{ headerTitle: 'Tasks' }}
       />
       <Tab.Screen
         name="Profile"

@@ -26,9 +26,9 @@ export const editTaskSuccess = () => ({
   type: 'EDIT_TASK_SUCCESS',
 });
 
-export const taskListRequest = (data) => ({
+export const taskListRequest = (uid) => ({
   type: 'TASK_LIST_REQUEST',
-  payload: data,
+  payload: uid,
 });
 
 export const tasksListSuccess = (tasks) => ({

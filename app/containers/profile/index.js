@@ -1,4 +1,4 @@
-import { Dimensions, SafeAreaView, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
+import { Dimensions, StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { logoutRequest } from 'store/constants/authActions';
@@ -8,6 +8,9 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Container } from 'components';
+import { ScreensRoutes } from 'root/navigation/Screens';
+import { Strings } from 'config/strings';
+import { Colors } from 'styles/colors';
 
 const { width, height } = Dimensions.get('window')
 
@@ -21,34 +24,27 @@ const Profile = ({ navigation }) => {
   }
   return (
     <Container>
-      <View style={{ backgroundColor: 'blue', alignItems: 'center' }}>
+      <View style={{ backgroundColor: Colors.PRIMARY, alignItems: 'center' }}>
         <View style={{ marginVertical: 16, alignItems: 'center' }}>
           <Text style={{ color: '#FFF', fontFamily: 'Montserrat-Bold', fontSize: 20, }}>{profile_data?.name}</Text>
-          <Text style={{ color: '#FFF', fontFamily: 'Montserrat-Medium', fontSize: 14 }}>Mob : {profile_data?.mobile_number}</Text>
+          <Text style={{ color: '#FFF', fontFamily: 'Montserrat-Medium', fontSize: 14 }}>{Strings.PROFILE_MOB} : +91 {profile_data?.mobile_number}</Text>
           <Text style={{ color: '#FFF', fontFamily: 'Montserrat-Medium', fontSize: 14 }}> {profile_data?.address}</Text>
         </View>
 
-        <View style={{
-          height: 100,
-          width: 100,
-          marginBottom: -50,
-          borderRadius: 50,
-          backgroundColor: '#FFF',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}>
+        <View style={styles.profile_icon}>
           <FontAwesomeIcon name={'user-tie'} size={50} color={'gray'} />
         </View>
+
       </View>
       <View style={{ height: 60, }} />
       <View style={{ flex: 1, alignItems: 'center' }}>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('CreateProfile', { item: profile_data })}
+          onPress={() => navigation.navigate(ScreensRoutes.CREATE_PROFILE, profile_data)}
           style={styles.box}
         >
           <FontAwesome5 name={'user-edit'} size={20} color={'gray'} />
-          <Text style={styles.boxText}>Update Profile</Text>
+          <Text style={styles.boxText}>{Strings.PROFILE_UPDATE}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -61,11 +57,11 @@ const Profile = ({ navigation }) => {
         </TouchableOpacity>
 
         <TouchableOpacity
-          onPress={() => navigation.navigate('AddTask', { item: null })}
+          onPress={() => navigation.navigate(ScreensRoutes.ADD_TASK)}
           style={styles.box}
         >
           <AntDesign name={'addfile'} size={22} color={'gray'} />
-          <Text style={[styles.boxText, { color: 'gray' }]}>Add Task</Text>
+          <Text style={styles.boxText}>{Strings.CREATE_TASK}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity
@@ -73,7 +69,7 @@ const Profile = ({ navigation }) => {
           style={styles.box}
         >
           <AntDesign name={'logout'} size={22} color={'red'} />
-          <Text style={[styles.boxText, { color: 'red' }]}>Logout</Text>
+          <Text style={[styles.boxText, { color: 'red' }]}>{Strings.LOGOUT}</Text>
         </TouchableOpacity>
 
       </View>
@@ -84,6 +80,15 @@ const Profile = ({ navigation }) => {
 export default Profile
 
 const styles = StyleSheet.create({
+  profile_icon: {
+    height: 100,
+    width: 100,
+    marginBottom: -50,
+    borderRadius: 50,
+    backgroundColor: '#FFF',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   box: {
     flexDirection: 'row',
     padding: 16,
@@ -95,6 +100,7 @@ const styles = StyleSheet.create({
   boxText: {
     fontSize: 16,
     fontFamily: 'Poppins-Medium',
-    marginLeft: 16
+    marginLeft: 16,
+    color: Colors.BLACK
   }
 })

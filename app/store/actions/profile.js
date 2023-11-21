@@ -1,7 +1,8 @@
 
 import { put, call, takeLatest } from 'redux-saga/effects';
 import firestore from '@react-native-firebase/firestore';
-import { profileSuccess } from '../constants/profileActions';
+import { profileFailure, profileSuccess } from '../constants/profileActions';
+import * as RootNavigation from '../../root/navigation/root_navigation'
 
 function* createUserProfile(action) {
   try {
@@ -20,7 +21,7 @@ function* createUserProfile(action) {
     }
     
   } catch (error) {
-    yield put(loginFailure(error.message));
+    yield put(profileFailure(error.message));
   }
 }
 

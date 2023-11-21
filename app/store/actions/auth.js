@@ -5,6 +5,8 @@ import auth from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
 import { profileSuccess } from '../constants/profileActions';
 import { saveUserData } from 'utils/keychain';
+import { responseHandler } from 'config/message';
+import { Strings } from 'config/strings';
 
 function* loginUser(action) {
   try {
@@ -30,11 +32,21 @@ function* loginUser(action) {
         let data_ = documentSnapshot.data()
         yield put(profileSuccess(data_));
         yield call(saveUserData, data_);
-      } else {
-        //  RootNavigation.replace('CreateProfile')
       }
     }
   } catch (error) {
+
+    if (error.code == 'auth/invalid-login') {
+      yield call(responseHandler(Strings.INVALID_CREDENTIALS));
+    }
+    if (error.code === 'auth/email-already-in-use') {
+      yield call(responseHandler(Strings.ALREADY_IN_USE));
+    }
+    //yield call(Alert.alert, 'Alert Title', error.code);
+    if (error.code === 'auth/invalid-email') {
+      yield call(responseHandler(Strings.INVALID_EMAIL));
+    }
+
     yield put(loginFailure(error.message));
   }
 }

@@ -28,7 +28,7 @@ type RootStackParamList = {
 
   Home: undefined;
   TaskInfo: undefined;
-  AddTask: { item: object };
+  AddTask: { item: any };
   Dashboard: undefined;
   CreateProfile: { item: object };
   AppStartScreen: undefined;
@@ -56,7 +56,7 @@ function AppNavigation() {
             </> :
             <>
 
-              {/* <RootStack.Screen name="AppUserState" component={AppUserState} options={{ headerShown: false }} /> */}
+              <RootStack.Screen name="AppUserState" component={AppUserState} options={{ headerShown: false }} />
               <RootStack.Screen name="Dashboard" component={BottomTab} options={{ headerShown: false }} />
               <RootStack.Screen name="TaskInfo" component={TaskInfo} options={{ headerTitle: 'Task Details' }} />
               <RootStack.Screen name="AddTask" component={AddTask} />

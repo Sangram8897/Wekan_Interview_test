@@ -1,28 +1,29 @@
-import React, { useState, useReducer, useCallback } from 'react';
+import React, { useReducer, useCallback } from 'react';
 import { View, SafeAreaView, Alert } from 'react-native';
-import {Button,Input} from 'components';
-import { Colors } from 'styles/colors';
-
 import auth from "@react-native-firebase/auth";
+
+import { Button, Input } from 'components';
+import { Colors } from 'styles/colors';
 import { formReducer } from 'store/reducer/formReducer';
+import { Strings } from 'config/strings';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
 const ResetPassword = ({ navigation }) => {
-    const [email, setEmail] = useState('sangrampaste8897@gmail.com');
+
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
-            email: "",
+            username: "",
         },
         inputValidities: {
-            email: true,
+            username: false,
         },
-        formIsValid: true,
+        formIsValid: false,
     });
 
     const handleResetPassword = async () => {
         try {
-            await auth().sendPasswordResetEmail(email);
+            await auth().sendPasswordResetEmail(formState.inputValues.username);
             Alert.alert('Password Reset Email Sent',
                 'Check your email for instructions to reset your password.',
                 [
@@ -55,31 +56,28 @@ const ResetPassword = ({ navigation }) => {
             <View style={{ flex: 1 }}>
                 <View style={{ height: 16 }} />
                 <Input
+                    required={true}
+                    email={true}
                     id='username'
-                    label={'Enter your email'}
+                    label={Strings.EMAIL}
                     keyboardType={'default'}
                     autoFocus={true}
-                    initialValue={formState.inputValues.email}
-                    initialValid={formState.inputValidities.email}
-                    required={true}
+                    initialValue={formState.inputValues.username}
+                    initialValid={formState.inputValidities.username}
                     onInputChange={inputChangeHandler}
-                    placeholder={'User name'}
+                    placeholder={Strings.ENTER_EMAIL}
                 //   inputAccessoryViewID={inputAccessoryViewID}
                 />
                 <View style={{ height: 16 }} />
+
                 <Button
-                    // disabled={!formState.isValid}
+                    disabled={!formState.formIsValid}
                     backgroundColor={Colors.ACCENTS_UNION_BLUE}
                     textColor={Colors.WHITE}
-                    label="RESET PASSWORD"
+                    label={Strings.SIGNIN}
                     onPress={handleResetPassword}
                 />
-
-
-
-
             </View>
-
         </SafeAreaView>
     );
 };

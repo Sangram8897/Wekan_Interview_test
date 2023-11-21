@@ -1,18 +1,21 @@
 
 
 import React, { useEffect, useCallback, useReducer } from "react";
-import {  View, ScrollView, Keyboard, KeyboardAvoidingView } from "react-native";
+import { View, ScrollView, Keyboard, KeyboardAvoidingView } from "react-native";
 import { Button, Input, Container } from "components";
 
 import { useDispatch, useSelector } from "react-redux";
 import { profileRequest } from "store/constants/profileActions";
 import { formReducer } from "store/reducer/formReducer";
+import { Strings } from "config/strings";
+import { Colors } from "styles/colors";
+import { ScreensRoutes } from "root/navigation/Screens";
 
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
 
 const CreateProfile = ({ navigation, route }) => {
-  const { item } = route?.params;
+  const item = route?.params;
   const dispatch = useDispatch()
   const user_data = useSelector(state => state.auth.user);
 
@@ -29,13 +32,14 @@ const CreateProfile = ({ navigation, route }) => {
       address: item ? item.address : ""
     },
     inputValidities: {
-      name: false,
-      mobile_number: false,
-      address: false
+      name: item?.name ? true : false,
+      mobile_number: item?.mobile_number ? true : false,
+      address: true
     },
     formIsValid: false
   });
 
+  console.log('formState',formState);
   const inputChangeHandler = useCallback(
     (inputIdentifier, inputValue, inputValidity) => {
       dispatchFormState({
@@ -53,6 +57,12 @@ const CreateProfile = ({ navigation, route }) => {
       mobile_number: formState.inputValues.mobile_number,
       email: user_data.email
     }))
+    if (item) {
+      navigation.goBack()
+    } else {
+      navigation.replace(ScreensRoutes.DASHBOARD)
+    }
+
   }
 
   return (
@@ -68,32 +78,35 @@ const CreateProfile = ({ navigation, route }) => {
           <KeyboardAvoidingView enabled>
             <Input
               id='name'
-              label={'User name'}
+              label={Strings.PROFILE_NAME}
               autoFocus={true}
               keyboardType={'default'}
               initialValue={formState.inputValues.name}
               initialValid={formState.inputValidities.name}
               required={true}
               onInputChange={inputChangeHandler}
-              placeholder={'name'}
+              placeholder={Strings.PROFILE_ENTER_NAME}
               onSubmitEditing={Keyboard.dismiss}
             />
 
             <Input
               id='mobile_number'
-              label={'Mobile Number'}
-              keyboardType={'default'}
+              label={Strings.PROFILE_MOB}
+              keyboardType={'phone-pad'}
+
               initialValue={formState.inputValues.mobile_number}
               initialValid={formState.inputValidities.mobile_number}
               required={true}
               onInputChange={inputChangeHandler}
-              placeholder={'mobile_number'}
+              placeholder={Strings.PROFILE_ENTER_MOB}
               onSubmitEditing={Keyboard.dismiss}
+              minHeight={10}
+              minLength={10}
             />
 
             <Input
               id='address'
-              label={'Address'}
+              label={Strings.PROFILE_ADDRESS}
               keyboardType={'default'}
               initialValue={formState.inputValues.address}
               initialValid={formState.inputValidities.address}
@@ -105,16 +118,19 @@ const CreateProfile = ({ navigation, route }) => {
               multiline={true}
               required={true}
               onInputChange={inputChangeHandler}
-              placeholder={'address'}
+              placeholder={Strings.PROFILE_ENTER_ADDRESS}
               onSubmitEditing={Keyboard.dismiss}
             />
 
             <Button
               disabled={!formState.formIsValid}
-              backgroundColor="#7DE24E"
-              label={item ? "UPDATE" : "CREATE"}
+              backgroundColor={Colors.PRIMARY}
+              textColor={Colors.WHITE}
+              label={item ? Strings.CAP_UPDATE : Strings.CAP_CREATE}
               onPress={handleSubmitPress}
             />
+
+
 
           </KeyboardAvoidingView>
         </View>

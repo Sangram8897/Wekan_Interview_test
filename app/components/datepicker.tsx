@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { View, Button, Text, StyleSheet, Platform } from 'react-native';
+import { View, Button, Text, StyleSheet, Platform, TouchableOpacity,Keyboard } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import moment from 'moment';
@@ -23,7 +23,12 @@ const DatePickerComp = ({
     console.log('date', date);
 
     return (
-        <View style={styles.inputContainer}>
+        <TouchableOpacity
+        onPress={()=>{
+            Keyboard.dismiss()
+            setOpen(true)
+        }}
+        style={styles.inputContainer}>
             {label && <Text style={[styles.fieldLabelText]}>{label}</Text>}
             <View style={styles.datepicker}>
 
@@ -53,8 +58,7 @@ const DatePickerComp = ({
                     onPress={() => setOpen(true)}
                     name={'date'} size={20} color={'gray'} />
             </View>
-        </View>
-
+        </TouchableOpacity>
     )
 };
 

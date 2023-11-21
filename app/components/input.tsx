@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useContext } from 'react'
+import React, { useReducer, useEffect, useState } from 'react'
 import { StyleSheet, TextInput, Text, View, Platform, TextInputProps, StyleProp, ViewStyle, TextStyle } from 'react-native'
 import { Colors } from '../styles/colors';
 const INPUT_BLUR = 'INPUT_BLUR';
@@ -12,19 +12,9 @@ interface InputProps extends TextInputProps {
     autoFocus?: boolean;
     onInputChange: (id: string, value: string, isValid: boolean) => void;
     onSubmitEditing?: () => void;
-    // containerStyle: StyleProp<ViewStyle>;
-    // labelStyle: StyleProp<TextStyle>;
-    // textInputStyle: StyleProp<TextStyle>;
-     required?: boolean;
-    // email: boolean;
-    // min: number;
-    // max: number;
-    // minLength: number;
-
-    // errorText?: string;
-     minHeight?: number;
-     height?: number | boolean;
-    // keyboardType: 'default' | 'numeric' | 'email-address' | 'phone-pad' ;
+    required?: boolean;
+    minHeight?: number;
+    height?: number | boolean;
 }
 
 interface InputState {
@@ -57,13 +47,14 @@ const Input: React.FC<InputProps> = (props: any) => {
         isValid: props.initialValid,
         touched: false,
     });
+    //const [error, errorText] = useState("")
 
     const { onInputChange = () => { }, id, } = props;
     useEffect(() => {
-        // if(inputState.touched){
-        onInputChange(id, inputState.value, inputState.isValid);
+        //if (inputState.touched)
+            onInputChange(id, inputState.value, inputState.isValid);
 
-    }, [inputState, onInputChange])
+    }, [inputState, onInputChange]);
 
     const textChangeHandler = (text: string) => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -71,7 +62,7 @@ const Input: React.FC<InputProps> = (props: any) => {
         if (props?.required && text.trim().length === 0) {
             isValid = false;
         }
-        if (props?.email && emailRegex.test(text.toLowerCase())) {
+        if (props?.email && !emailRegex.test(text.toLowerCase())) {
             isValid = false;
         }
         if (props?.min != null && +text < props.min) {
@@ -99,13 +90,11 @@ const Input: React.FC<InputProps> = (props: any) => {
                 value={inputState.value}
                 onChangeText={(text) => textChangeHandler(text)}
                 onBlur={lostFocusHandler}
-                onSubmitEditing={props.onSubmitEditing}
                 inputAccessoryViewID={'uniqueID'}
                 // textAlignVertical="top"
                 placeholder={props.placeholder}
 
             />
-            {/* </View> */}
             {
                 !inputState.isValid && inputState.touched &&
                 <Text style={{ fontSize: 10, color: 'red' }}>{props.errorText}</Text>
@@ -126,11 +115,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         // alignItems: 'center',
         borderRadius: 6,
-        backgroundColor: '#FFF',
+        backgroundColor: Colors.WHITE,
         marginVertical: 4,
         borderWidth: 0.5,
         borderColor: Colors.GRAY_G1,
-        elevation: 5,
+
         minHeight: Platform.OS == 'ios' ? 55 : 50,
         ...Platform.select({
             ios: {
@@ -140,13 +129,13 @@ const styles = StyleSheet.create({
                 shadowRadius: 4,
             },
             android: {
-
+                elevation: 4,
             },
         }),
     },
     inputContainer: {
         width: '90%',
-        marginTop: 10,
+        marginTop: 4,
         alignSelf: 'center',
     },
     fieldLabelText: {

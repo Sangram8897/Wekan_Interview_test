@@ -19,34 +19,35 @@ function* addTask(action) {
 function* editTask(action) {
     try {
         const { uid, data } = action.payload;
-      
+
         const documentRef = firestore().collection('tasks').doc(uid);
 
         yield call([documentRef, documentRef.update], data);
         yield put(editTaskSuccess());
     } catch (error) {
-         yield put(addTaskFailure(error.message));
+        yield put(addTaskFailure(error.message));
     }
 }
 function* deleteTask(action) {
     try {
         const uid = action.payload;
-      
+
         const documentRef = firestore().collection('tasks').doc(uid);
 
         yield call([documentRef, documentRef.delete]);
         yield put(deleteTaskSuccess());
 
     } catch (error) {
-         yield put(addTaskFailure(error.message));
+        yield put(addTaskFailure(error.message));
     }
 }
 
 function* getTaskList(action) {
     try {
-        const data = action.payload;
-        const querySnapshot = yield call([firestore().collection('tasks'),
-        firestore().collection('tasks').get]);
+        const uid = action.payload;
+
+        const querySnapshot = yield call([firestore().collection('tasks').where('uid', '==', uid),
+        firestore().collection('tasks').where('uid', '==', 18).get]);
 
         const dataList = querySnapshot.docs.map(doc => ({
             id: doc.id,
@@ -56,7 +57,7 @@ function* getTaskList(action) {
             yield put(tasksListSuccess(dataList))
         }
     } catch (error) {
-         yield put(addTaskFailure(error.message));
+        yield put(addTaskFailure(error.message));
     }
 }
 

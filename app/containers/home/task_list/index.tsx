@@ -3,59 +3,45 @@ import { View, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native
 import { NavigationProp } from "@react-navigation/native";
 import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 
-import { deleteTaskRequest, taskListRequest } from 'store/constants/tasksActions';
 import { task_status_colors, task_status_obj } from 'config/variables';
 import { useDispatch } from 'react-redux';
 import moment from 'moment';
 import { Colors } from 'styles/colors';
+import { ScreensRoutes } from 'root/navigation/Screens';
+import { Strings } from 'config/strings';
 
 interface RouterProps {
   navigation: NavigationProp<any, any>;
-  resto_list: object
+  resto_list: object[]
 }
 
-type ItemProps = { title: string };
-
 const TaskList = ({ navigation, resto_list }: RouterProps) => {
-  const dispatch = useDispatch()
 
-  const deleteTask = async (id: String) => {
-    await dispatch(deleteTaskRequest(id))
-    dispatch(taskListRequest())
-
-  }
   const Item = ({ item }: any) => {
-    console.log('88897', item);
-
     return (<TouchableOpacity
-      onPress={() => navigation.navigate('TaskInfo', { item: item })}
+      onPress={() => navigation.navigate(ScreensRoutes.TASK_INFO, { item: item })}
       style={styles.item}>
 
       <View style={{ padding: 12 }}>
         <View style={{ flex: 1, flexDirection: 'row' }}>
           <View style={{ flexDirection: 'column', flex: 1 }}>
-            <Text style={styles.title}>{item?.title}</Text>
 
             <Text style={[styles.taskStatusText, {
               color: task_status_colors[item?.status]
-            }]}>{item?.status ? task_status_obj[item?.status] : 'DRAFT'}</Text>
+            }]}>{item?.status ? task_status_obj[item?.status] : ''}</Text>
 
-       
+            <Text style={styles.title}>{item?.title}</Text>
 
-            <Text style={[styles.taskStatusText]}>Due Date :
-
-            {item?.due_date && <Text style={[styles.dueDateText, {
-              color: Colors.BLUE_B1
-            }]}>
-              {moment(item?.due_date).format('DD-MMM')}
-            </Text>}
-</Text>
+            <Text style={[styles.DueDateTitleText]}>{Strings.VIEW_DUE_DATE+"  "}
+              {item?.due_date && <Text style={styles.dueDateText}>
+                {moment(item?.due_date).format('DD-MMM')}
+              </Text>}
+            </Text>
 
           </View>
           <TouchableOpacity
-            onPress={() => { navigation.navigate('AddTask', item) }}
+            onPress={() => { navigation.navigate(ScreensRoutes.ADD_TASK, item) }}
             style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-            {/* <Text>4.4 * </Text> */}
             <AntDesignIcon name={'edit'} size={20} color={'gray'} />
           </TouchableOpacity>
 
@@ -70,11 +56,12 @@ const TaskList = ({ navigation, resto_list }: RouterProps) => {
     <View style={styles.container}>
       <FlatList
         style={{ paddingVertical: 8 }}
-        scrollEnabled={false}
         data={resto_list}
         renderItem={({ item }) => <Item item={item} />}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, index) => index.toString()}
+        ListFooterComponent={()=> <View style={{height:50}}/>}
       />
+     
     </View>
   );
 };
@@ -96,9 +83,11 @@ const styles = StyleSheet.create({
     shadowRadius: 6,
   },
   title: {
-    fontSize: 18,
+    fontSize: 16,
     fontFamily: 'Poppins-SemiBold',
-    color: 'black'
+    color: 'black',
+    marginTop:8,
+    marginBottom:4,
   },
   taskStatusText: {
     fontSize: 14,
@@ -106,11 +95,19 @@ const styles = StyleSheet.create({
   },
   dueDateText: {
     fontSize: 12,
+    fontFamily: 'Montserrat-Bold',
+    color: Colors.BLACK
+  },
+  DueDateTitleText: {
     fontFamily: 'Montserrat-Medium',
+    fontSize: 12,
+    color: Colors.GRAY_G3
   },
   description: {
     fontSize: 14,
     fontFamily: 'Montserrat-Regular',
+    color: '#555555',
+    marginVertical:4,
   }
 });
 

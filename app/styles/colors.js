@@ -1,12 +1,10 @@
 export const Colors = {
-    primary: '#007DC6',
+    PRIMARY: '#1E50A6',
     white: '',
-    balck: 'black',
+    black: 'black',
     success: '#28a745',
     error: '#dc3545',
     text:'black',
-
-
 
     BACKGROUND_DARK:'',
     BACKGROUND_LIGHT:'#F0F4FA',
@@ -26,12 +24,12 @@ export const Colors = {
     BLUE_B5: '#060452',
 
     WHITE: '#FFFFFF',
-    BLACK: '#OEOE1D',
+    BLACK: '#111111',
     SCRIM: '#0E0E1D',
 
     GRAY_G1: '#F3F3F3',
     GRAY_G2: '#D9D9D9',
-    GRAY_G3: '#8E8E94',
+    GRAY_G3: '#878787',
     GRAY_G4: '#0E0C7A',
     GRAY_G5: '#050452',
 

@@ -6,23 +6,24 @@ import { formReducer } from "store/reducer/formReducer";
 
 import { loginRequest } from "store/constants/authActions";
 import { useDispatch } from "react-redux";
+import { Strings } from "config/strings";
+import { ScreensRoutes } from "root/navigation/Screens";
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
 const Login = ({ navigation }) => {
   const dispatch = useDispatch()
 
-  const passwordInputRef = createRef();
   const [formState, dispatchFormState] = useReducer(formReducer, {
     inputValues: {
-      username: "sangrampaste8897@gmail.com",
-      password: "123456"
+      username: "",
+      password: ""
     },
     inputValidities: {
-      username: true,
-      password: true
+      username: false,
+      password: false
     },
-    formIsValid: true,
+    formIsValid: false,
   });
 
   const handleSubmitPress = () => {
@@ -39,6 +40,7 @@ const Login = ({ navigation }) => {
       })
     }, [dispatchFormState]);
 
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView
@@ -53,59 +55,60 @@ const Login = ({ navigation }) => {
           <KeyboardAvoidingView enabled>
 
             <Input
+              required={true}
+              email={true}
               id='username'
-              label={'Email'}
+              label={Strings.EMAIL}
               keyboardType={'default'}
               autoFocus={true}
               initialValue={formState.inputValues.username}
               initialValid={formState.inputValidities.username}
-              required={true}
               onInputChange={inputChangeHandler}
-              onSubmitEditing={() =>
-                passwordInputRef.current &&
-                passwordInputRef.current.focus()
-              }
-              placeholder={'User name'}
+              onSubmitEditing={Keyboard.dismiss}
+              placeholder={Strings.ENTER_EMAIL}
+              errorText={Strings.EMAIL_ERROR}
             //   inputAccessoryViewID={inputAccessoryViewID}
             />
 
             <Input
               id='password'
-              label={'Password'}
+              label={Strings.PASSWORD}
               keyboardType={'default'}
               initialValue={formState.inputValues.password}
               initialValid={formState.inputValidities.password}
               required={true}
               secureTextEntry={true}
               onInputChange={inputChangeHandler}
-              placeholder={'Password'}
+              placeholder={Strings.ENTER_PASSWORD}
               onSubmitEditing={Keyboard.dismiss}
+              minLength={6}
+              errorText={Strings.PASSWORD_ERROR}
             // inputAccessoryViewID={inputAccessoryViewID}
             />
 
             <Button
-              disabled={!formState.inputValues.username || !formState.inputValues.password}
-              backgroundColor={Colors.ACCENTS_UNION_BLUE}
+              disabled={!formState.formIsValid}
+              backgroundColor={Colors.PRIMARY}
               textColor={Colors.WHITE}
-              label="LOGIN"
+              label={Strings.LOGIN}
               onPress={handleSubmitPress}
             />
 
             <Text
-              style={styles.registerTextStyle}
+              style={styles.forgotPwdTextStyle}
               onPress={() =>
-                navigation.navigate("ResetPassword")
+                navigation.navigate(ScreensRoutes.RESET_PASSWORD)
               }
             >
-              Forgot Password
+              {Strings.FORGOT_PASSWORD}
             </Text>
             <Text
               style={styles.registerTextStyle}
               onPress={() =>
-                navigation.navigate("SignIn")
+                navigation.navigate(ScreensRoutes.SIGN_IN)
               }
             >
-              New Here ? Register
+              {Strings.CREATE_NEW_ACCOUNT}
             </Text>
           </KeyboardAvoidingView>
         </View>
@@ -123,11 +126,19 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   registerTextStyle: {
-    color: "red",
+    color: "#0096FF",
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 14,
     alignSelf: "center",
+  },
+  forgotPwdTextStyle: {
+    color: Colors.GRAY_G4,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 14,
+    alignSelf: "center",
+    margin: 12
   },
 });
 
