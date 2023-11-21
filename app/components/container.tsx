@@ -1,14 +1,17 @@
 import React, { useContext } from 'react';
 import { View, SafeAreaView, StyleSheet, ActivityIndicator, StatusBar } from 'react-native';
 
-const Container = props => {
+interface ContainerProps {
+  children: React.ReactNode;
+  isLoading?: boolean;
+}
+
+const Container:React.FC<ContainerProps> = props => {
   return (
     <SafeAreaView style={[styles.container]}>
       <StatusBar
-        style={{ zIndex: 1000 }}
         animated={true}
         showHideTransition={'none'}
-       // backgroundColor={Colors.COLOR_TYPE_1}
         barStyle={'dark-content'}
       />
       <View {...props} style={styles.sub_container}>
@@ -26,7 +29,6 @@ const Container = props => {
 
 const styles = {
   fullScreen: {
-    // backgroundColor: Colors.COLOR_BLACK_TRANSP,
     justifyContent: 'center',
     ...StyleSheet.absoluteFillObject,
     borderRadius: 15,

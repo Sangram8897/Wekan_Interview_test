@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
-const LoginScreen = ({ navigation }) => {
+const Login = ({ navigation }) => {
   const dispatch = useDispatch()
 
   const passwordInputRef = createRef();
@@ -94,7 +94,7 @@ const LoginScreen = ({ navigation }) => {
             <Text
               style={styles.registerTextStyle}
               onPress={() =>
-                navigation.navigate("ResetPasswordScreen")
+                navigation.navigate("ResetPassword")
               }
             >
               Forgot Password
@@ -102,7 +102,7 @@ const LoginScreen = ({ navigation }) => {
             <Text
               style={styles.registerTextStyle}
               onPress={() =>
-                navigation.navigate("SignInScreen")
+                navigation.navigate("SignIn")
               }
             >
               New Here ? Register
@@ -113,7 +113,7 @@ const LoginScreen = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-export default LoginScreen;
+export default Login;
 
 const styles = StyleSheet.create({
   container: {

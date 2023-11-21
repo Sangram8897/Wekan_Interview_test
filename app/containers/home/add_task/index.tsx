@@ -1,22 +1,29 @@
 import React, { useCallback, useReducer, useEffect } from "react";
 import { SafeAreaView, Keyboard, Platform, } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
+import { NavigationProp, RouteProp } from "@react-navigation/native";
 import { addTaskRequest, editTaskRequest, taskListRequest } from "store/constants/tasksActions";
 
 import { formReducer } from "store/reducer/formReducer";
-import moment from "moment";
 import { task_status } from "config/variables";
 import { Colors } from "styles/colors";
 
-import { Input, Button, DropdownComp, DatePickerComp } from 'components'
+import { Input, Button, DropdownComp, DatePickerComp, Container } from 'components/index'
+import { RootState } from "store/configure_store";
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE';
+interface RouterProps {
+    navigation: NavigationProp<any, any>;
+    route: RouteProp<any, any>;
+}
 
-const AddTask = ({ route, navigation, }) => {
+const AddTask = ({ route, navigation, }: RouterProps) => {
     const dispatch = useDispatch()
     const item = route?.params;
-    const user_data = useSelector(state => state.auth.user);
-    console.log('item', item);
+    const user_data = useSelector((state: RootState) => state.auth.user);
+    console.log('AddTaskitem', item);
+
+
     useEffect(() => {
         navigation.setOptions({
             title: item ? 'Update Task' : 'Create Task',
@@ -38,7 +45,7 @@ const AddTask = ({ route, navigation, }) => {
     });
 
     const inputChangeHandler = useCallback(
-        (inputIdentifier, inputValue, inputValidity) => {
+        (inputIdentifier: string, inputValue: any, inputValidity: boolean) => {
             dispatchFormState({
                 type: FORM_INPUT_UPDATE,
                 value: inputValue,
@@ -51,7 +58,7 @@ const AddTask = ({ route, navigation, }) => {
         let data = {
             title: formState.inputValues.title,
             description: formState.inputValues.description,
-            due_date: formState.inputValues.due_date ? moment(formState.inputValues.due_date).format('DD-MMM-YYYY') : "",
+            due_date: formState.inputValues?.due_date ? formState.inputValues.due_date : "",
             status: formState.inputValues.status,
             uid: user_data?.uid
         }
@@ -65,7 +72,7 @@ const AddTask = ({ route, navigation, }) => {
     }
 
     return (
-        <SafeAreaView style={{ flex: 1, backgroundColor: '#FFF' }}>
+        <Container>
             <Input
                 id='title'
                 autoFocus={true}
@@ -122,7 +129,7 @@ const AddTask = ({ route, navigation, }) => {
                 label={item ? 'UPDATE' : "ADD"}
                 onPress={handleSubmitPress}
             />
-        </SafeAreaView>
+        </Container>
     )
 }
 

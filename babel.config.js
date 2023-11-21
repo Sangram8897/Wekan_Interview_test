@@ -14,6 +14,8 @@ module.exports = {
       "config": "./app/config",
       "hooks": "./app/hooks",
       "styles": "./app/styles",
+      "root":"./app/root",
+      "utils":"./app/utils"
     }
   }],
 

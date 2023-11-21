@@ -1,10 +1,33 @@
 import React, { useReducer, useEffect, useContext } from 'react'
-import { StyleSheet, TextInput, Text, View, Platform } from 'react-native'
+import { StyleSheet, TextInput, Text, View, Platform, TextInputProps, StyleProp, ViewStyle, TextStyle } from 'react-native'
 import { Colors } from '../styles/colors';
 const INPUT_BLUR = 'INPUT_BLUR';
 const INPUT_CHANGE = 'INPUT_CHANGE';
 
-const inputReducer = (state, action) => {
+interface InputProps extends TextInputProps {
+    label?: string;
+    initialValue?: string;
+    initialValid?: boolean;
+    onInputChange: (id: string, value: string, isValid: boolean) => void;
+    containerStyle: StyleProp<ViewStyle>;
+    labelStyle: StyleProp<TextStyle>;
+    textInputStyle: StyleProp<TextStyle>;
+    required: boolean;
+    email: string;
+    min: number;
+    max: number;
+    minLength: number;
+    id: string;
+    errorText: string
+}
+
+interface InputState {
+    value: string;
+    isValid: boolean;
+    touched: boolean;
+}
+
+const inputReducer = (state: InputState, action: any) => {
     switch (action.type) {
         case INPUT_CHANGE:
             return {
@@ -22,7 +45,7 @@ const inputReducer = (state, action) => {
     }
 }
 
-const Input = (props) => {
+const Input: React.FC<InputProps> = (props) => {
     const [inputState, dispatch] = useReducer(inputReducer, {
         value: props.initialValue ? props.initialValue : '',
         isValid: props.initialValid,
@@ -36,13 +59,13 @@ const Input = (props) => {
 
     }, [inputState, onInputChange])
 
-    const textChangeHandler = text => {
+    const textChangeHandler = (text: string) => {
         const emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         let isValid = true;
         if (props.required && text.trim().length === 0) {
             isValid = false;
         }
-        if (props.email && emailRegex.test(test.toLowerCase())) {
+        if (props.email && emailRegex.test(text.toLowerCase())) {
             isValid = false;
         }
         if (props.min != null && +text < props.min) {

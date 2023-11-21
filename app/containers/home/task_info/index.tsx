@@ -5,6 +5,7 @@ import AntDesignIcon from 'react-native-vector-icons/AntDesign';
 import { task_status_colors, task_status_obj } from 'config/variables';
 import { deleteTaskRequest, taskListRequest } from 'store/constants/tasksActions';
 import { useDispatch } from 'react-redux';
+import Container from 'components/container';
 
 const TaskInfo = ({ route, navigation, }: any) => {
   const { item } = route?.params;
@@ -18,35 +19,37 @@ const TaskInfo = ({ route, navigation, }: any) => {
   }
 
   return (
-    <View style={[Layout.fill, { margin: 12, padding: 12, backgroundColor: '#FFF' }]}>
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+    <Container>
+      <View style={[Layout.fill, { margin: 12, padding: 12, backgroundColor: '#FFF' }]}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
 
-        <Text style={[styles.taskStatusText, {
-          color: task_status_colors[item?.status]
-        }]}>{item?.status ? task_status_obj[item?.status] : 'DRAFT'}</Text>
+          <Text style={[styles.taskStatusText, {
+            color: task_status_colors[item?.status]
+          }]}>{item?.status ? task_status_obj[item?.status] : 'DRAFT'}</Text>
 
-        <View style={{ flexDirection: 'row' }}>
-          <TouchableOpacity
-            onPress={() => { navigation.navigate('AddTask', item) }}
-            style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-            {/* <Text>4.4 * </Text> */}
-            <AntDesignIcon name={'edit'} size={20} color={'skyblue'} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => deleteTask(item.id)}
-            style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
-            <AntDesignIcon name={'delete'} size={20} color={'red'} />
-          </TouchableOpacity>
+          <View style={{ flexDirection: 'row' }}>
+            <TouchableOpacity
+              onPress={() => { navigation.navigate('AddTask', item) }}
+              style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
+              {/* <Text>4.4 * </Text> */}
+              <AntDesignIcon name={'edit'} size={20} color={'skyblue'} />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => deleteTask(item.id)}
+              style={{ height: 20, width: 35, justifyContent: 'center', alignItems: 'center', borderRadius: 4 }}>
+              <AntDesignIcon name={'delete'} size={20} color={'red'} />
+            </TouchableOpacity>
+          </View>
         </View>
+
+
+        <Text style={[styles.title]}>{item.title}</Text>
+
+
+        <Text style={[styles.descTitleText]}>{'Description : '}</Text>
+        <Text style={[Fonts.textSmall, styles.desc]}>{item?.description}</Text>
       </View>
-
-
-      <Text style={[styles.title]}>{item.title}</Text>
-
-
-      <Text style={[styles.descTitleText]}>{'Description : '}</Text>
-      <Text style={[Fonts.textSmall, styles.desc]}>{item?.description}</Text>
-    </View>
+    </Container>
   )
 }
 

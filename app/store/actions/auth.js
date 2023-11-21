@@ -4,6 +4,7 @@ import { loginSuccess, loginFailure, logoutSuccess, logoutFailure } from '../con
 import auth from "@react-native-firebase/auth";
 import firestore from '@react-native-firebase/firestore';
 import { profileSuccess } from '../constants/profileActions';
+import { saveUserData } from 'utils/keychain';
 
 function* loginUser(action) {
   try {
@@ -28,7 +29,7 @@ function* loginUser(action) {
       if (documentSnapshot.exists) {
         let data_ = documentSnapshot.data()
         yield put(profileSuccess(data_));
-        //   RootNavigation.replace('Dashboard')
+        yield call(saveUserData, data_);
       } else {
         //  RootNavigation.replace('CreateProfile')
       }

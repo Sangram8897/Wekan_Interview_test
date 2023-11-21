@@ -1,11 +1,26 @@
 import React from "react";
 import {
+  StyleProp,
   Text,
+  TextStyle,
   TouchableOpacity,
+  ViewStyle,
 } from "react-native";
-import { Colors } from "../styles/colors";
+import { Colors } from "styles/colors";
 
-export default function Button({
+interface ButtonProps extends TouchableOpacity {
+  onPress?: () => void;
+  label?: string;
+  textColor?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  style?: StyleProp<ViewStyle>;
+  textStyle?: StyleProp<TextStyle>;
+  disabled?: boolean;
+  borderWidth?: number;
+}
+
+const Button: React.FC<ButtonProps> = ({
   onPress = () => { },
   label = "welcome",
   textColor = 'black',
@@ -15,12 +30,12 @@ export default function Button({
   textStyle,
   disabled = false,
   borderWidth = 0,
-}) {
+}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       activeOpacity={0.5}
-     // disabled={disabled}
+      disabled={disabled}
       style={[{
         width: '90%',
         // width: '100%',
@@ -46,3 +61,4 @@ export default function Button({
     </TouchableOpacity>
   );
 }
+export default Button;

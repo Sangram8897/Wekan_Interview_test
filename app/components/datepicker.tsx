@@ -1,15 +1,27 @@
 
 import React, { useState } from 'react';
-import { View, Button, Text, StyleSheet,Platform } from 'react-native';
+import { View, Button, Text, StyleSheet, Platform } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import moment from 'moment';
-import { Colors } from '../styles/colors';
+import { Colors } from 'styles/colors';
 
-const DatePickerComp = ({ label = '', date = '', placeholder = "", setDate = () => { } }) => {
+interface DatePickerCompProps {
+    label?: string;
+    date?: string | null;
+    placeholder?: string;
+    setDate: (date: Date) => void;
+}
+
+const DatePickerComp = ({
+    label = '',
+    date = '',
+    placeholder = "",
+    setDate = () => { } }: DatePickerCompProps) => {
+
     const [open, setOpen] = useState(false)
     console.log('date', date);
-    //return <></>
+
     return (
         <View style={styles.inputContainer}>
             {label && <Text style={[styles.fieldLabelText]}>{label}</Text>}
@@ -19,7 +31,7 @@ const DatePickerComp = ({ label = '', date = '', placeholder = "", setDate = () 
                     modal
                     mode={'date'}
                     open={open}
-                    date={date ? date : new Date()}
+                    date={date ? new Date(date) : new Date()}
                     onConfirm={(date) => {
                         setOpen(false)
                         setDate(date)

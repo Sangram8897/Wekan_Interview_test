@@ -21,6 +21,12 @@
       "styles/*": [
         "./app/styles/*"
       ],
+      "utils/*": [
+        "./app/utils/*"
+      ],
+      "root/*": [
+        "./app/root/*"
+      ],
     }
   }
 }

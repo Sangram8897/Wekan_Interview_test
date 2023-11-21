@@ -7,11 +7,12 @@ import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome6';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { Container } from 'components';
 
 const { width, height } = Dimensions.get('window')
 
 const Profile = ({ navigation }) => {
-  
+
   const dispatch = useDispatch()
   const profile_data = useSelector(state => state.profile.profile);
 
@@ -19,7 +20,7 @@ const Profile = ({ navigation }) => {
     dispatch(logoutRequest())
   }
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <Container>
       <View style={{ backgroundColor: 'blue', alignItems: 'center' }}>
         <View style={{ marginVertical: 16, alignItems: 'center' }}>
           <Text style={{ color: '#FFF', fontFamily: 'Montserrat-Bold', fontSize: 20, }}>{profile_data?.name}</Text>
@@ -76,7 +77,7 @@ const Profile = ({ navigation }) => {
         </TouchableOpacity>
 
       </View>
-    </SafeAreaView>
+    </Container>
   )
 }
 

@@ -8,7 +8,7 @@ import { formReducer } from 'store/reducer/formReducer';
 
 const FORM_INPUT_UPDATE = 'FORM_INPUT_UPDATE'
 
-const ResetPasswordScreen = ({ navigation }) => {
+const ResetPassword = ({ navigation }) => {
     const [email, setEmail] = useState('sangrampaste8897@gmail.com');
     const [formState, dispatchFormState] = useReducer(formReducer, {
         inputValues: {
@@ -83,4 +83,4 @@ const ResetPasswordScreen = ({ navigation }) => {
         </SafeAreaView>
     );
 };
-export default ResetPasswordScreen;
+export default ResetPassword;

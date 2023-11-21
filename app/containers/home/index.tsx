@@ -7,6 +7,9 @@ import NotFound from 'components/notfound'
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import { Props } from '../../root/navigation'
 import TaskList from './task_list'
+
+import { RootState } from 'store/configure_store'
+import Container from 'components/container'
 /**
  * 
  * @param param0 
@@ -26,19 +29,19 @@ interface MyObject {
 
 const Home = ({ navigation }: Props) => {
   const dispatch = useDispatch()
-  //const [resto_list, set_resto_list] = useState<MyObject[]>([])
-  const user_data = useSelector(state => state.auth.user);
-  const task_list = useSelector(state => state.tasksReducer.tasks);
-  const profile_data = useSelector(state => state.profile.profile);
+  const user_data = useSelector((state: RootState) => state.auth.user);
+  const task_list = useSelector((state: RootState) => state.tasksReducer.tasks);
+  const profile_data = useSelector((state: RootState) => state.profile.profile);
 
-  console.log('user_data9999999', user_data);
+  console.log('profile_data 9999999', profile_data);
+
   useEffect(() => {
     // Use `setOptions` to update the button that we previously specified
     // Now the button includes an `onPress` handler to update the count
     navigation.setOptions({
       headerRight: () => (
         <TouchableOpacity
-          onPress={() => navigation.navigate('AddTask', { item: null })}
+          onPress={() => navigation.navigate('AddTask', { item: {} })}
           style={{ marginRight: 10 }}>
           <AntDesign name={'addfile'} size={22} color={'blue'} />
         </TouchableOpacity>
@@ -58,13 +61,13 @@ const Home = ({ navigation }: Props) => {
 
   if (profile_data) {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <Container>
         {(task_list && task_list.length > 0) ?
           <TaskList navigation={navigation} resto_list={task_list} />
           : <NotFound />
         }
 
-      </SafeAreaView>
+      </Container>
     )
   }
   return <></>
